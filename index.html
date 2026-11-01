@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>台股早期探測雷達</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", sans-serif; -webkit-tap-highlight-color: transparent; }
+    .drawer-content { transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease; }
+  </style>
+</head>
+<body class="bg-[#F2F2F7] text-zinc-900 pb-28 antialiased">
+  <!-- 頂部黑底主卡片 -->
+  <div class="bg-[#121214] text-white pt-12 pb-7 px-6 rounded-b-[2.5rem] shadow-xl">
+    <div class="flex justify-between items-center mb-5 text-zinc-400 text-sm">
+      <span class="tracking-widest uppercase font-semibold text-xs text-amber-400">Signals Radar</span>
+      <span class="text-xs">每日 15:35 自動更新</span>
+    </div>
+    <div class="text-center my-3">
+      <div class="text-6xl font-extrabold tracking-tight text-white mb-1">3 <span class="text-2xl font-light text-zinc-400">檔</span></div>
+      <p class="text-xs text-zinc-400 tracking-wider">今日符合「早期主升段」暗流標的</p>
+    </div>
+    <div class="grid grid-cols-2 gap-3 mt-6">
+      <div class="bg-zinc-800/80 backdrop-blur rounded-2xl p-3 border border-zinc-700/50 flex justify-between items-center">
+        <div><div class="text-[10px] text-zinc-400">物理供需</div><div class="text-xl font-bold text-amber-300">82 <span class="text-xs font-normal text-zinc-400">分</span></div></div>
+        <span class="text-[10px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full font-medium">轉折點</span>
+      </div>
+      <div class="bg-zinc-800/80 backdrop-blur rounded-2xl p-3 border border-zinc-700/50 flex justify-between items-center">
+        <div><div class="text-[10px] text-zinc-400">市場熱度</div><div class="text-xl font-bold text-emerald-400">24 <span class="text-xs font-normal text-zinc-400">分</span></div></div>
+        <span class="text-[10px] bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full font-medium">極安靜</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 篩選標的列表 -->
+  <div class="px-5 mt-6">
+    <div class="flex justify-between items-center mb-3">
+      <span class="text-xs font-bold text-zinc-400 tracking-wider">點擊卡片查看詳細研判與配置</span>
+      <span class="text-xs font-medium text-amber-700">共 3 筆</span>
+    </div>
+
+    <div class="space-y-4">
+      <!-- 標的 1 -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-zinc-200/60 transition active:scale-[0.99]" onclick="toggleDrawer('card1', 'icon1')">
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-bold text-zinc-900">聯光通</span>
+              <span class="text-xs font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded-md">4903</span>
+            </div>
+            <p class="text-xs text-zinc-500 mt-1">光通訊 CPO 關鍵耗材 · 儲能案場年底認列</p>
+          </div>
+          <span class="text-[11px] font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/60">早期萌芽</span>
+        </div>
+        <div class="flex gap-2 mt-3 text-[11px]">
+          <span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">大戶 +4.2%</span>
+          <span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">散戶持續退</span>
+          <span class="bg-amber-50 text-amber-800 px-2.5 py-1 rounded-lg">合約負債 +48%</span>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
+          <span>非對稱勝率：4.5 : 1</span>
+          <span id="icon1" class="transition-transform duration-300 text-zinc-400">展開詳情 <i class="fa-solid fa-chevron-down ml-1"></i></span>
+        </div>
+        <!-- 展開內容 -->
+        <div id="card1" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-600 space-y-2 pt-0 border-zinc-100">
+          <div class="bg-zinc-50 p-3 rounded-xl mt-3 space-y-1.5 border border-zinc-100">
+            <p class="font-bold text-zinc-800">📌 為什麼出現在雷達？</p>
+            <p>• <b>海外映射</b>：外網報導 CPO 及高速連接需求於 2026-2027 爆發，訂單外溢至亞洲二線耗材廠。</p>
+            <p>• <b>籌碼特徵</b>：千張大戶連 4 週吸籌，融資創下近半年新低，籌碼洗淨完畢。</p>
+            <p>• <b>配置建議</b>：建議 8% 試探倉位，停損守平台下緣 -6.5%，博取大眾瘋狂期的主升段空間。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 標的 2 -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-zinc-200/60 transition active:scale-[0.99]" onclick="toggleDrawer('card2', 'icon2')">
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-bold text-zinc-900">台特化</span>
+              <span class="text-xs font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded-md">6902</span>
+            </div>
+            <p class="text-xs text-zinc-500 mt-1">先進製程特氣（矽乙烷）· 一線晶圓鏈</p>
+          </div>
+          <span class="text-[11px] font-semibold px-2.5 py-1 bg-amber-50 text-amber-800 rounded-full border border-amber-200/60">盤整突破</span>
+        </div>
+        <div class="flex gap-2 mt-3 text-[11px]">
+          <span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">大戶持平高檔</span>
+          <span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">合約負債季增</span>
+          <span class="bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-lg">2026爆發期</span>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
+          <span>非對稱勝率：3.8 : 1</span>
+          <span id="icon2" class="transition-transform duration-300 text-zinc-400">展開詳情 <i class="fa-solid fa-chevron-down ml-1"></i></span>
+        </div>
+        <div id="card2" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-600 space-y-2 pt-0 border-zinc-100">
+          <div class="bg-zinc-50 p-3 rounded-xl mt-3 space-y-1.5 border border-zinc-100">
+            <p class="font-bold text-zinc-800">📌 為什麼出現在雷達？</p>
+            <p>• <b>海外映射</b>：先進埃米製程放量帶動特種氣體消耗暴增，國際供應鏈產能吃緊。</p>
+            <p>• <b>籌碼特徵</b>：大戶持股在高檔極度鎖定，市場多數散戶因看似高本益比不敢碰，實為週期獲利起點。</p>
+            <p>• <b>配置建議</b>：建議 10% 試探倉，防守線抓突破平台低點 -7.0%。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 標的 3 -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-zinc-200/60 transition active:scale-[0.99]" onclick="toggleDrawer('card3', 'icon3')">
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-bold text-zinc-900">振樺電</span>
+              <span class="text-xs font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded-md">8114</span>
+            </div>
+            <p class="text-xs text-zinc-500 mt-1">邊緣 AI 終端 · AI 晶片高階檢測機台</p>
+          </div>
+          <span class="text-[11px] font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/60">早期萌芽</span>
+        </div>
+        <div class="flex gap-2 mt-3 text-[11px]">
+          <span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">大戶連增 3.1%</span>
+          <span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">媒體零關注</span>
+          <span class="bg-amber-50 text-amber-800 px-2.5 py-1 rounded-lg">訂單能見度極高</span>
+        </div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
+          <span>非對稱勝率：4.2 : 1</span>
+          <span id="icon3" class="transition-transform duration-300 text-zinc-400">展開詳情 <i class="fa-solid fa-chevron-down ml-1"></i></span>
+        </div>
+        <div id="card3" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-600 space-y-2 pt-0 border-zinc-100">
+          <div class="bg-zinc-50 p-3 rounded-xl mt-3 space-y-1.5 border border-zinc-100">
+            <p class="font-bold text-zinc-800">📌 為什麼出現在雷達？</p>
+            <p>• <b>海外映射</b>：全球 AI 晶片出貨量激增，帶動後端高階測試治具與邊緣算力終端需求。</p>
+            <p>• <b>籌碼特徵</b>：千張大戶持股連續回升，財報合約負債處於歷史高檔，散戶完全未上車。</p>
+            <p>• <b>配置建議</b>：建議 8%~10% 配置，防守均線支撐 -6.0%。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部懸浮膠囊導航 -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#1A1A1E]/95 backdrop-blur-md px-6 py-3 rounded-full border border-zinc-700/60 shadow-2xl flex items-center gap-7 text-zinc-400 text-sm">
+    <button class="text-amber-400 flex flex-col items-center gap-0.5"><i class="fa-solid fa-satellite-dish"></i><span class="text-[9px]">雷達</span></button>
+    <button class="hover:text-white flex flex-col items-center gap-0.5"><i class="fa-solid fa-globe"></i><span class="text-[9px]">外媒</span></button>
+    <button class="hover:text-white flex flex-col items-center gap-0.5"><i class="fa-solid fa-star"></i><span class="text-[9px]">自選</span></button>
+    <button class="hover:text-white flex flex-col items-center gap-0.5"><i class="fa-solid fa-sliders"></i><span class="text-[9px]">試算</span></button>
+  </div>
+
+  <script>
+    function toggleDrawer(id, iconId) {
+      const el = document.getElementById(id);
+      const icon = document.getElementById(iconId);
+      if (el.style.maxHeight && el.style.maxHeight !== '0px') {
+        el.style.maxHeight = '0px';
+        el.style.opacity = '0';
+        icon.innerHTML = '展開詳情 <i class="fa-solid fa-chevron-down ml-1"></i>';
+      } else {
+        el.style.maxHeight = '300px';
+        el.style.opacity = '1';
+        icon.innerHTML = '收起 <i class="fa-solid fa-chevron-up ml-1"></i>';
+      }
+    }
+  </script>
+</body>
+</html>
