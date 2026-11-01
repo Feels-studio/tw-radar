@@ -17,6 +17,13 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Test Run
+      - name: Run Fetch Script
         run: |
-          echo "GitHub Actions is working perfectly!"
+          python scripts/fetch_data.py
+
+      - name: Commit and Push if Changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update market signals [skip ci]" && git push)
