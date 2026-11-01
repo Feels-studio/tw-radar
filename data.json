@@ -1,43 +1,55 @@
 {
-  "update_time": "15:35",
+  "update_time": "07:46",
   "total_count": 3,
-  "fundamental_score": 82,
-  "sentiment_score": 24,
+  "fundamental_score": 86,
+  "sentiment_score": 21,
   "stocks": [
     {
-      "id": "card1",
+      "id": "stock_1",
       "name": "聯光通",
       "code": "4903",
       "desc": "光通訊 CPO 關鍵耗材 · 儲能案場年底認列",
       "status": "早期萌芽",
       "status_type": "green",
-      "tags": ["大戶 +4.2%", "散戶持續退", "合約負債 +48%"],
+      "tags": [
+        "大戶 +4.2%",
+        "散戶持續退",
+        "合約負債 +48%"
+      ],
       "win_rate": "4.5 : 1",
       "reason_foreign": "外網報導 CPO 及高速連接需求於 2026-2027 爆發，訂單外溢至亞洲二線耗材廠。",
       "reason_chips": "千張大戶連 4 週吸籌，融資創下近半年新低，籌碼洗淨完畢。",
       "reason_action": "建議 8% 試探倉位，停損守平台下緣 -6.5%，博取大眾瘋狂期的主升段空間。"
     },
     {
-      "id": "card2",
+      "id": "stock_2",
       "name": "台特化",
       "code": "6902",
       "desc": "先進製程特氣（矽乙烷）· 一線晶圓鏈",
       "status": "盤整突破",
       "status_type": "yellow",
-      "tags": ["大戶持平高檔", "合約負債季增", "2026爆發期"],
+      "tags": [
+        "大戶持平高檔",
+        "合約負債季增",
+        "2026爆發期"
+      ],
       "win_rate": "3.8 : 1",
       "reason_foreign": "先進埃米製程放量帶動特種氣體消耗暴增，國際供應鏈產能吃緊。",
       "reason_chips": "大戶持股在高檔極度鎖定，市場多數散戶因看似高本益比不敢碰，實為週期獲利起點。",
       "reason_action": "建議 10% 試探倉，防守線抓突破平台低點 -7.0%。"
     },
     {
-      "id": "card3",
+      "id": "stock_3",
       "name": "振樺電",
       "code": "8114",
       "desc": "邊緣 AI 終端 · AI 晶片高階檢測機台",
       "status": "早期萌芽",
       "status_type": "green",
-      "tags": ["大戶連增 3.1%", "媒體零關注", "訂單能見度極高"],
+      "tags": [
+        "大戶連增 3.1%",
+        "媒體零關注",
+        "訂單能見度極高"
+      ],
       "win_rate": "4.2 : 1",
       "reason_foreign": "全球 AI 晶片出貨量激增，帶動後端高階測試治具與邊緣算力終端需求。",
       "reason_chips": "千張大戶持股連續回升，財報合約負債處於歷史高檔，散戶完全未上車。",
