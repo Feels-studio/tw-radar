@@ -33,7 +33,7 @@
       <div class="text-6xl font-extrabold tracking-tight text-white mb-1">
         <span id="stock-count">-</span> <span class="text-2xl font-light text-zinc-400">檔</span>
       </div>
-      <p class="text-xs text-zinc-400 tracking-wider">今日符合「早期主升段」暗流標的</p>
+      <p id="sub-desc" class="text-xs text-zinc-400 tracking-wider">今日符合「早期主升段」暗流標的</p>
     </div>
     <div class="grid grid-cols-2 gap-3 mt-6">
       <div class="bg-zinc-800/80 rounded-2xl p-3 border border-zinc-700/50 flex justify-between items-center">
@@ -52,116 +52,4 @@
             <span id="sent-score">-</span> <span class="text-xs font-normal text-zinc-400">分</span>
           </div>
         </div>
-        <span class="text-[10px] bg-emerald-400/20 text-emerald-300 px-2.5 py-0.5 rounded-full font-medium">極安靜</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 下半部動態標的列表 -->
-  <div class="bg-[#F2F2F7] min-h-screen px-5 pt-6 pb-36 rounded-t-[2rem] -mt-4 shadow-inner">
-    <div class="flex justify-between items-center mb-3 px-1">
-      <span class="text-xs font-bold text-zinc-400 tracking-wider">點擊卡片查看詳細研判與配置</span>
-      <span id="list-total" class="text-xs font-medium text-amber-800">- 筆</span>
-    </div>
-
-    <!-- 卡片動態放置容器 -->
-    <div id="cards-container" class="space-y-4">
-      <div class="text-center py-10 text-xs text-zinc-400">正在獲取最新雷達標的...</div>
-    </div>
-  </div>
-
-  <!-- 底部懸浮膠囊 -->
-  <div class="fixed bottom-7 left-1/2 -translate-x-1/2 z-50">
-    <div class="bg-[#1A1A1E]/95 backdrop-blur-md px-6 py-2.5 rounded-full border border-zinc-700/70 shadow-2xl flex items-center justify-around gap-6 text-zinc-400">
-      <button class="text-amber-400 flex flex-col items-center justify-center min-w-[34px]">
-        <i class="fa-solid fa-satellite-dish text-sm mb-0.5"></i>
-        <span class="text-[10px] whitespace-nowrap">雷達</span>
-      </button>
-      <button class="hover:text-white flex flex-col items-center justify-center min-w-[34px]">
-        <i class="fa-solid fa-globe text-sm mb-0.5"></i>
-        <span class="text-[10px] whitespace-nowrap">外媒</span>
-      </button>
-      <button class="hover:text-white flex flex-col items-center justify-center min-w-[34px]">
-        <i class="fa-solid fa-star text-sm mb-0.5"></i>
-        <span class="text-[10px] whitespace-nowrap">自選</span>
-      </button>
-      <button class="hover:text-white flex flex-col items-center justify-center min-w-[34px]">
-        <i class="fa-solid fa-sliders text-sm mb-0.5"></i>
-        <span class="text-[10px] whitespace-nowrap">試算</span>
-      </button>
-    </div>
-  </div>
-
-  <script>
-    function toggleDrawer(id, iconId) {
-      const el = document.getElementById(id);
-      const icon = document.getElementById(iconId);
-      if (el.style.maxHeight && el.style.maxHeight !== '0px') {
-        el.style.maxHeight = '0px';
-        el.style.opacity = '0';
-        icon.innerHTML = '展開詳情 <i class="fa-solid fa-chevron-down ml-1"></i>';
-      } else {
-        el.style.maxHeight = '340px';
-        el.style.opacity = '1';
-        icon.innerHTML = '收起 <i class="fa-solid fa-chevron-up ml-1"></i>';
-      }
-    }
-
-    // 動態載入並繪製清單
-    fetch('./data.json?t=' + Date.now())
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('stock-count').innerText = data.total_count;
-        document.getElementById('fund-score').innerText = data.fundamental_score;
-        document.getElementById('sent-score').innerText = data.sentiment_score;
-        document.getElementById('update-badge').innerText = '今日 ' + data.update_time + ' 更新';
-        document.getElementById('list-total').innerText = '共 ' + data.total_count + ' 筆';
-
-        const container = document.getElementById('cards-container');
-        container.innerHTML = '';
-
-        data.stocks.forEach((stock, idx) => {
-          const badgeClass = stock.status_type === 'green' 
-            ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' 
-            : 'bg-amber-50 text-amber-800 border-amber-200/60';
-
-          const tagsHtml = stock.tags.map(tag => `<span class="bg-zinc-100 text-zinc-700 px-2.5 py-1 rounded-lg">${tag}</span>`).join('');
-
-          const cardHtml = `
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-zinc-200/60 active:scale-[0.99] transition cursor-pointer" onclick="toggleDrawer('${stock.id}', 'icon_${stock.id}')">
-              <div class="flex justify-between items-start">
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="text-lg font-bold text-zinc-900">${stock.name}</span>
-                    <span class="text-xs font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded-md">${stock.code}</span>
-                  </div>
-                  <p class="text-xs text-zinc-500 mt-1">${stock.desc}</p>
-                </div>
-                <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap ${badgeClass}">${stock.status}</span>
-              </div>
-              <div class="flex flex-wrap gap-2 mt-3 text-[11px]">
-                ${tagsHtml}
-              </div>
-              <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
-                <span>非對稱勝率：${stock.win_rate}</span>
-                <span id="icon_${stock.id}" class="transition-transform duration-300 text-zinc-400">展開詳情 <i class="fa-solid fa-chevron-down ml-1"></i></span>
-              </div>
-              <div id="${stock.id}" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-600 space-y-2 pt-0">
-                <div class="bg-zinc-50 p-3 rounded-xl mt-3 space-y-1.5 border border-zinc-100">
-                  <p class="font-bold text-zinc-800">📌 為什麼出現在雷達？</p>
-                  <p>• <b>海外映射</b>：${stock.reason_foreign}</p>
-                  <p>• <b>籌碼特徵</b>：${stock.reason_chips}</p>
-                  <p>• <b>配置建議</b>：${stock.reason_action}</p>
-                </div>
-              </div>
-            </div>
-          `;
-          container.insertAdjacentHTML('beforeend', cardHtml);
-        });
-      })
-      .catch(err => {
-        console.error('無法載入資料:', err);
-      });
-  </script>
-</body>
-</html>
+        <span class="text-[10px] bg-emerald-40
