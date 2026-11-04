@@ -2,8 +2,11 @@ name: Update Market Data
 
 on:
   schedule:
-    - cron: '35 7 * * 1-5'  # 台灣平日 15:35 盤後自動抓真實收盤
-  workflow_dispatch:         # 支援手動隨時點擊更新
+    - cron: '35 7 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -31,4 +34,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Fetch real market data [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git pull --rebase && git commit -m "Update real market data" && git push)
