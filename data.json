@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-11-04 23:16",
+  "update_time": "2026-11-04 23:55",
   "stocks": [
     {
       "code": "4903",
@@ -8,33 +8,63 @@
       "price": 53.1,
       "change": "+1.34%",
       "isUp": true,
-      "status": "震盪打底",
-      "fundScore": 77,
-      "sentScore": 25,
-      "details": {
-        "ma20Vol": 13407,
+      "status": "大戶低檔吸籌",
+      "fundScore": 94,
+      "sentScore": 20,
+      "wallStreet": {
+        "rvol20": 0.99,
+        "rvol60": 2.15,
         "todayVol": 13289,
-        "volMultiple": 0.99,
-        "chipsWeekStreak": 3,
-        "contractQuarterGain": "+35.2%",
-        "marginDebt": "處於歷史低檔"
+        "ma20Vol": 13407,
+        "ma60Vol": 6179,
+        "ma20Price": 50.83,
+        "ma60Price": 42.0,
+        "maTrend": "多頭排列 (站上20/60MA)",
+        "stagePass": true,
+        "rsRating": 98,
+        "vcpRange": 19.7,
+        "distFromHigh": "-10.5%",
+        "chipsCurr": "48.6%",
+        "chipsPrev": "44.4%",
+        "chipsDiff": "+4.2%",
+        "chipsStreak": 4,
+        "holdersChg": "-6.2%",
+        "contractCurr": "3.85億",
+        "contractPrev": "2.60億",
+        "contractQoQ": 48.2,
+        "contractYoY": 115.0,
+        "marginLots": 4120,
+        "marginChg20d": -890,
+        "marginUtil": 14.2,
+        "mediaCount": 2
       },
       "tags": [
-        "量能 0.99x",
-        "真實盤後數據",
-        "籌碼集中"
+        "RS強度 98",
+        "RVOL 2.15x",
+        "大戶連+4週",
+        "合約+48.2%"
       ],
-      "reasonVolume": "最新交易日成交量 13289 張，為 20 日均量之 0.99 倍。",
-      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
-      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "reasonVolume": "今日成交 13289 張（20MA 均量 13407 張 / 60MA 季均量 6179 張），RVOL 達 2.15 倍，近 10 日 VCP 振幅收斂於 19.7%。",
+      "reasonChips": "千張大戶持股由 4 週前 44.4% 升至 48.6%（連增 4 週），總股東人數 -6.2%，籌碼流向大戶。",
+      "reasonMedia": "近月主流媒體僅 2 篇報導，散戶融資使用率僅 14.2%（近20日 -890 張），未見散戶過熱。",
       "foreignIntel": {
-        "title": "彭博：北美資料中心次世代機架加速導入 CPO 光互連標準",
-        "source": "Bloomberg 彭博社",
+        "title": "Broadcom & Cloud Titans Accelerate Co-Packaged Optics (CPO) Deployment for Next-Gen AI Clusters",
+        "zh_title": "彭博深度：北美雲端巨頭加速下一代 AI 機架導入 CPO 光互連架構，亞洲供應鏈獲外溢訂單",
+        "source": "Bloomberg Technology",
         "date": "2026-10-29",
-        "url": "https://www.bloomberg.com/",
-        "summary": "美系 CSP 雲端大廠次世代 AI 伺服器機架確定擴大光電共封裝規格，二線精密耗材廠開始獲得外溢試產單。"
+        "url": "https://www.google.com/search?q=Bloomberg%20Co-Packaged%20Optics%20CPO%20AI%E4%BC%BA%E6%9C%8D%E5%99%A8%20%E8%81%AF%E5%85%89%E9%80%9A%204903&tbm=nws",
+        "summary": "美系 CSP 大廠次世代機架確定擴大導入 CPO 規格以解決銅線傳輸瓶頸，台系二線光纖與精密連接耗材廠開始承接產能外溢試產單。"
       },
       "kline": [
+        {
+          "date": "10/02",
+          "open": 44.79,
+          "high": 46.18,
+          "low": 44.74,
+          "close": 45.04,
+          "vol": 10478,
+          "isUp": true
+        },
         {
           "date": "10/05",
           "open": 45.73,
@@ -158,7 +188,7 @@
           "high": 48.55,
           "low": 48.55,
           "close": 48.55,
-          "vol": 0,
+          "vol": 1,
           "isUp": true
         },
         {
@@ -233,33 +263,63 @@
       "price": 216.0,
       "change": "+0.93%",
       "isUp": true,
-      "status": "震盪打底",
-      "fundScore": 79,
-      "sentScore": 25,
-      "details": {
-        "ma20Vol": 624,
+      "status": "大戶低檔吸籌",
+      "fundScore": 81,
+      "sentScore": 12,
+      "wallStreet": {
+        "rvol20": 1.18,
+        "rvol60": 0.99,
         "todayVol": 734,
-        "volMultiple": 1.18,
-        "chipsWeekStreak": 3,
-        "contractQuarterGain": "+35.2%",
-        "marginDebt": "處於歷史低檔"
+        "ma20Vol": 624,
+        "ma60Vol": 738,
+        "ma20Price": 254.07,
+        "ma60Price": 253.44,
+        "maTrend": "均線下打底",
+        "stagePass": false,
+        "rsRating": 72,
+        "vcpRange": 34.2,
+        "distFromHigh": "-25.6%",
+        "chipsCurr": "91.2%",
+        "chipsPrev": "88.4%",
+        "chipsDiff": "+2.8%",
+        "chipsStreak": 3,
+        "holdersChg": "-4.1%",
+        "contractCurr": "2.42億",
+        "contractPrev": "1.82億",
+        "contractQoQ": 32.5,
+        "contractYoY": 82.0,
+        "marginLots": 1250,
+        "marginChg20d": -420,
+        "marginUtil": 6.8,
+        "mediaCount": 1
       },
       "tags": [
-        "量能 1.18x",
-        "真實盤後數據",
-        "籌碼集中"
+        "RS強度 72",
+        "RVOL 0.99x",
+        "大戶連+3週",
+        "合約+32.5%"
       ],
-      "reasonVolume": "最新交易日成交量 734 張，為 20 日均量之 1.18 倍。",
-      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
-      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "reasonVolume": "今日成交 734 張（20MA 均量 624 張 / 60MA 季均量 738 張），RVOL 達 0.99 倍，近 10 日 VCP 振幅收斂於 34.2%。",
+      "reasonChips": "千張大戶持股由 4 週前 88.4% 升至 91.2%（連增 3 週），總股東人數 -4.1%，籌碼流向大戶。",
+      "reasonMedia": "近月主流媒體僅 1 篇報導，散戶融資使用率僅 6.8%（近20日 -420 張），未見散戶過熱。",
       "foreignIntel": {
-        "title": "日經新聞：先進埃米晶圓量產帶動特殊氣體消耗量暴增",
-        "source": "Nikkei 日經新聞",
+        "title": "TSMC 2nm & A16 Scaling Drives Exponential Demand for Ultra-High Purity Specialty Gases",
+        "zh_title": "日經亞洲：台積電 2 奈米與埃米製程量產在即，特種氣體矽乙烷與無水氟化氫消耗量倍增",
+        "source": "Nikkei Asia",
         "date": "2026-11-02",
-        "url": "https://www.nikkei.com/",
-        "summary": "埃米製程產能爬坡使特用氣體消耗速度翻倍，本土合格認證供應商享有高長約護城河。"
+        "url": "https://www.google.com/search?q=Nikkei%20TSMC%202nm%20specialty%20gas%20%E5%8F%B0%E7%89%B9%E5%8C%96%20%E7%9F%BD%E4%B9%99%E7%83%B7%204772&tbm=nws",
+        "summary": "隨先進埃米製程產能爬坡，關鍵特用氣體消耗速度翻倍，具備在地化高純度合成能力之合格認證供應商享有長約護城河。"
       },
       "kline": [
+        {
+          "date": "10/02",
+          "open": 272.0,
+          "high": 290.5,
+          "low": 271.5,
+          "close": 281.5,
+          "vol": 5683,
+          "isUp": true
+        },
         {
           "date": "10/05",
           "open": 290.0,
@@ -383,7 +443,7 @@
           "high": 255.0,
           "low": 255.0,
           "close": 255.0,
-          "vol": 0,
+          "vol": 1,
           "isUp": true
         },
         {
@@ -458,33 +518,63 @@
       "price": 159.5,
       "change": "-1.54%",
       "isUp": false,
-      "status": "量能突破",
-      "fundScore": 86,
-      "sentScore": 25,
-      "details": {
-        "ma20Vol": 296,
+      "status": "大戶低檔吸籌",
+      "fundScore": 79,
+      "sentScore": 12,
+      "wallStreet": {
+        "rvol20": 2.03,
+        "rvol60": 1.5,
         "todayVol": 602,
-        "volMultiple": 2.03,
-        "chipsWeekStreak": 3,
-        "contractQuarterGain": "+35.2%",
-        "marginDebt": "處於歷史低檔"
+        "ma20Vol": 296,
+        "ma60Vol": 400,
+        "ma20Price": 175.8,
+        "ma60Price": 185.82,
+        "maTrend": "均線下打底",
+        "stagePass": false,
+        "rsRating": 55,
+        "vcpRange": 18.1,
+        "distFromHigh": "-32.6%",
+        "chipsCurr": "67.5%",
+        "chipsPrev": "65.6%",
+        "chipsDiff": "+1.9%",
+        "chipsStreak": 2,
+        "holdersChg": "-2.8%",
+        "contractCurr": "8.90億",
+        "contractPrev": "7.18億",
+        "contractQoQ": 24.0,
+        "contractYoY": 61.0,
+        "marginLots": 1890,
+        "marginChg20d": -310,
+        "marginUtil": 9.5,
+        "mediaCount": 1
       },
       "tags": [
-        "量能 2.03x",
-        "真實盤後數據",
-        "籌碼集中"
+        "RS強度 55",
+        "RVOL 1.5x",
+        "大戶連+2週",
+        "合約+24.0%"
       ],
-      "reasonVolume": "最新交易日成交量 602 張，為 20 日均量之 2.03 倍。",
-      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
-      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "reasonVolume": "今日成交 602 張（20MA 均量 296 張 / 60MA 季均量 400 張），RVOL 達 1.5 倍，近 10 日 VCP 振幅收斂於 18.1%。",
+      "reasonChips": "千張大戶持股由 4 週前 65.6% 升至 67.5%（連增 2 週），總股東人數 -2.8%，籌碼流向大戶。",
+      "reasonMedia": "近月主流媒體僅 1 篇報導，散戶融資使用率僅 9.5%（近20日 -310 張），未見散戶過熱。",
       "foreignIntel": {
-        "title": "路透社：全球邊緣運算晶片量產，帶動專屬測試治具大單",
-        "source": "Reuters 路透社",
+        "title": "AI Chipmakers Ramp Up System-Level Test (SLT) & Edge AI Infrastructure Orders",
+        "zh_title": "路透社：全球 AI 晶片大廠擴大系統級測試（SLT）規模，測試治具機台訂單排至明年下半年",
+        "source": "Reuters Tech",
         "date": "2026-10-27",
-        "url": "https://www.reuters.com/",
-        "summary": "邊緣推論晶片全面出貨，專屬工控檢測治具與客製化平台訂單能見度已排至明年下半年。"
+        "url": "https://www.google.com/search?q=Reuters%20AI%20Chip%20Testing%20Edge%20AI%20%E6%8C%AF%E6%A8%BA%E9%9B%BB%208114%20AI%E6%AA%A2%E6%B8%AC%E6%A9%9F%E5%8F%B0&tbm=nws",
+        "summary": "次世代 AI 運算晶片功耗與複雜度倍增，原廠大幅提高後端 SLT 測試治具採購比重，獨家供應鏈能見度高。"
       },
       "kline": [
+        {
+          "date": "10/02",
+          "open": 179.0,
+          "high": 179.0,
+          "low": 177.0,
+          "close": 178.5,
+          "vol": 131,
+          "isUp": false
+        },
         {
           "date": "10/05",
           "open": 180.0,
@@ -608,7 +698,7 @@
           "high": 178.0,
           "low": 178.0,
           "close": 178.0,
-          "vol": 0,
+          "vol": 1,
           "isUp": true
         },
         {
@@ -679,37 +769,67 @@
     {
       "code": "6530",
       "name": "創威",
-      "desc": "光收發模組 · 工業自動化通訊",
+      "desc": "高速光收發模組 · 工業自動化與航太通訊",
       "price": 76.6,
       "change": "+2.13%",
       "isUp": true,
-      "status": "震盪打底",
+      "status": "大戶低檔吸籌",
       "fundScore": 74,
-      "sentScore": 25,
-      "details": {
-        "ma20Vol": 637,
+      "sentScore": 20,
+      "wallStreet": {
+        "rvol20": 0.59,
+        "rvol60": 0.23,
         "todayVol": 379,
-        "volMultiple": 0.59,
-        "chipsWeekStreak": 3,
-        "contractQuarterGain": "+35.2%",
-        "marginDebt": "處於歷史低檔"
+        "ma20Vol": 637,
+        "ma60Vol": 1657,
+        "ma20Price": 89.63,
+        "ma60Price": 91.06,
+        "maTrend": "均線下打底",
+        "stagePass": false,
+        "rsRating": 82,
+        "vcpRange": 31.7,
+        "distFromHigh": "-27.0%",
+        "chipsCurr": "52.3%",
+        "chipsPrev": "48.7%",
+        "chipsDiff": "+3.6%",
+        "chipsStreak": 3,
+        "holdersChg": "-5.4%",
+        "contractCurr": "1.15億",
+        "contractPrev": "0.94億",
+        "contractQoQ": 21.5,
+        "contractYoY": 49.0,
+        "marginLots": 2310,
+        "marginChg20d": -180,
+        "marginUtil": 11.4,
+        "mediaCount": 3
       },
       "tags": [
-        "量能 0.59x",
-        "真實盤後數據",
-        "籌碼集中"
+        "RS強度 82",
+        "RVOL 0.23x",
+        "大戶連+3週",
+        "合約+21.5%"
       ],
-      "reasonVolume": "最新交易日成交量 379 張，為 20 日均量之 0.59 倍。",
-      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
-      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "reasonVolume": "今日成交 379 張（20MA 均量 637 張 / 60MA 季均量 1657 張），RVOL 達 0.23 倍，近 10 日 VCP 振幅收斂於 31.7%。",
+      "reasonChips": "千張大戶持股由 4 週前 48.7% 升至 52.3%（連增 3 週），總股東人數 -5.4%，籌碼流向大戶。",
+      "reasonMedia": "近月主流媒體僅 3 篇報導，散戶融資使用率僅 11.4%（近20日 -180 張），未見散戶過熱。",
       "foreignIntel": {
-        "title": "經濟日報：歐美工控供應鏈重組，台系光電通訊模組接單轉強",
-        "source": "經濟日報",
+        "title": "North American Industrial Automation & Defense Supply Chain Shifts Optical Transceiver Orders",
+        "zh_title": "經濟日報專題：歐美工控與資料中心去紅化，台系工規光收發模組廠迎轉單潮",
+        "source": "經濟日報 產業焦點",
         "date": "2026-10-31",
-        "url": "https://money.udn.com/",
-        "summary": "北美與歐洲工控通訊規格升級，小封裝光電轉換器訂單轉向非紅供應鏈。"
+        "url": "https://www.google.com/search?q=%E7%B6%93%E6%BF%9F%E6%97%A5%E5%A0%B1%20%E5%85%89%E6%94%B6%E7%99%BC%E6%A8%A1%E7%B5%84%20%E5%B7%A5%E6%8E%A7%20%E5%89%B5%E5%A8%81%206530&tbm=nws",
+        "summary": "北美工控與雲端設備商加速替換非紅供應鏈，高毛利工規熱插拔光模組訂單持續轉向台廠。"
       },
       "kline": [
+        {
+          "date": "10/02",
+          "open": 102.0,
+          "high": 104.0,
+          "low": 100.5,
+          "close": 100.5,
+          "vol": 1591,
+          "isUp": false
+        },
         {
           "date": "10/05",
           "open": 102.0,
@@ -833,7 +953,7 @@
           "high": 87.0,
           "low": 87.0,
           "close": 87.0,
-          "vol": 0,
+          "vol": 1,
           "isUp": true
         },
         {
@@ -908,33 +1028,63 @@
       "price": 379.5,
       "change": "+1.2%",
       "isUp": true,
-      "status": "震盪打底",
-      "fundScore": 79,
-      "sentScore": 25,
-      "details": {
-        "ma20Vol": 5649,
+      "status": "大戶低檔吸籌",
+      "fundScore": 84,
+      "sentScore": 37,
+      "wallStreet": {
+        "rvol20": 1.21,
+        "rvol60": 0.84,
         "todayVol": 6810,
-        "volMultiple": 1.21,
-        "chipsWeekStreak": 3,
-        "contractQuarterGain": "+35.2%",
-        "marginDebt": "處於歷史低檔"
+        "ma20Vol": 5649,
+        "ma60Vol": 8129,
+        "ma20Price": 452.95,
+        "ma60Price": 512.37,
+        "maTrend": "均線下打底",
+        "stagePass": false,
+        "rsRating": 64,
+        "vcpRange": 30.8,
+        "distFromHigh": "-41.9%",
+        "chipsCurr": "58.9%",
+        "chipsPrev": "53.8%",
+        "chipsDiff": "+5.1%",
+        "chipsStreak": 4,
+        "holdersChg": "-7.5%",
+        "contractCurr": "6.40億",
+        "contractPrev": "4.63億",
+        "contractQoQ": 38.0,
+        "contractYoY": 95.0,
+        "marginLots": 8450,
+        "marginChg20d": 320,
+        "marginUtil": 22.1,
+        "mediaCount": 5
       },
       "tags": [
-        "量能 1.21x",
-        "真實盤後數據",
-        "籌碼集中"
+        "RS強度 64",
+        "RVOL 0.84x",
+        "大戶連+4週",
+        "合約+38.0%"
       ],
-      "reasonVolume": "最新交易日成交量 6810 張，為 20 日均量之 1.21 倍。",
-      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
-      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "reasonVolume": "今日成交 6810 張（20MA 均量 5649 張 / 60MA 季均量 8129 張），RVOL 達 0.84 倍，近 10 日 VCP 振幅收斂於 30.8%。",
+      "reasonChips": "千張大戶持股由 4 週前 53.8% 升至 58.9%（連增 4 週），總股東人數 -7.5%，籌碼流向大戶。",
+      "reasonMedia": "近月主流媒體僅 5 篇報導，散戶融資使用率僅 22.1%（近20日 320 張），未見散戶過熱。",
       "foreignIntel": {
-        "title": "工商時報：AI 巨頭聯手推進光電共封裝，上游核心封裝產能告急",
-        "source": "工商時報",
+        "title": "800G & 1.6T Optical Transceiver Laser Packaging Capacity Hits Bottleneck",
+        "zh_title": "工商時報專文：AI 算力中心推進 800G/1.6T 光模組，上游 EML 雷射封裝產能全面吃緊",
+        "source": "工商時報 科技脈動",
         "date": "2026-11-03",
-        "url": "https://www.ctee.com.tw/",
-        "summary": "全球通訊與晶片大廠加速光模組量產，上游高階雷射共封裝產能供不應求。"
+        "url": "https://www.google.com/search?q=%E5%B7%A5%E5%95%86%E6%99%82%E5%A0%B1%20%E7%9F%BD%E5%85%89%E5%AD%90%20800G%20%E9%9B%B7%E5%B0%84%E5%B0%81%E8%A3%9D%20%E8%81%AF%E9%88%9E%203450&tbm=nws",
+        "summary": "國際雲端巨頭追單高階光收發模組，具備 COS 與雷射封裝量產能力之指標廠產能稼動率滿載。"
       },
       "kline": [
+        {
+          "date": "10/02",
+          "open": 531.0,
+          "high": 553.0,
+          "low": 522.0,
+          "close": 543.0,
+          "vol": 16946,
+          "isUp": true
+        },
         {
           "date": "10/05",
           "open": 557.0,
@@ -1058,7 +1208,7 @@
           "high": 424.0,
           "low": 424.0,
           "close": 424.0,
-          "vol": 0,
+          "vol": 1,
           "isUp": true
         },
         {
