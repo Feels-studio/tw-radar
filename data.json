@@ -1,5 +1,5 @@
 {
-  "update_time": "16:31",
+  "update_time": "16:33",
   "total_count": 3,
   "fundamental_score": 84,
   "sentiment_score": 24,
@@ -22,16 +22,16 @@
       ]
     },
     {
-      "name": "創威",
-      "code": "6530",
-      "desc": "光收發模組 · 工業自動化高速傳輸",
-      "status": "早期萌芽",
-      "status_type": "green",
-      "win_rate": "4.0 : 1",
-      "reason_foreign": "歐美工業物聯網升級與光電轉換模組訂單轉移，小市值供應商迎來轉單效益。",
-      "reason_chips": "集保股權分散度改善，千張大戶低檔承接，融資退場，符合籌碼乾淨特質。",
-      "reason_action": "建議建立 7% 試探倉位，停損抓 -5.8%。",
-      "id": "card_6530",
+      "name": "台特化",
+      "code": "6902",
+      "desc": "先進製程特氣（矽乙烷）· 一線晶圓鏈",
+      "status": "盤整突破",
+      "status_type": "yellow",
+      "win_rate": "3.8 : 1",
+      "reason_foreign": "全球先進製程擴產帶動特種氣體消耗暴增，國際供應鏈產能吃緊，台廠具就近替代優勢。",
+      "reason_chips": "大戶持股在高檔極度鎖定，市場多數散戶因看似高本益比不敢碰，實為週期獲利起點。",
+      "reason_action": "建議建立 10% 試探倉，防守線抓突破平台低點 -7.0%。",
+      "id": "card_6902",
       "tags": [
         "大戶連增",
         "散戶融資退",
