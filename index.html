@@ -26,18 +26,18 @@
 </head>
 <body class="bg-[#121214] text-zinc-900 antialiased select-none">
 
-  <!-- 頂部黑底主看板（支援標的/自選雙向連動） -->
+  <!-- 頂部黑底主看板 -->
   <div class="bg-[#121214] text-white pt-4 pb-7 px-6 rounded-b-[2.5rem] shadow-2xl">
     
-    <!-- 頂端列：日期與「搜尋標的」按鈕 -->
+    <!-- 頂端列：行情更新時間與搜尋按鈕 -->
     <div class="flex justify-between items-center mb-5">
       <div>
         <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">MARKET DATA</div>
-        <div id="market-date" class="text-xs text-zinc-400 font-medium">--</div>
+        <div id="market-date" class="text-xs text-zinc-400 font-medium">資料載入中...</div>
       </div>
-      <button onclick="executeScan()" id="scan-btn" class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-zinc-950 font-bold rounded-full shadow-lg shadow-amber-500/20 smooth-transition">
-        <i id="scan-icon" class="fa-solid fa-magnifying-glass text-xs"></i>
-        <span class="text-xs tracking-wider">搜尋標的</span>
+      <button onclick="refreshData()" id="scan-btn" class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-zinc-950 font-bold rounded-full shadow-lg shadow-amber-500/20 smooth-transition">
+        <i id="scan-icon" class="fa-solid fa-arrows-rotate text-xs"></i>
+        <span class="text-xs tracking-wider">更新行情</span>
       </button>
     </div>
     
@@ -56,7 +56,7 @@
       <p id="focus-desc" class="text-xs text-zinc-400 mt-1 line-clamp-1">請在下方選擇標的進行檢視</p>
     </div>
 
-    <!-- 雙軌看板：普通標的顯示「供需/情緒」，自選標的動態切換為「累積漲跌/持有成本」 -->
+    <!-- 雙軌看板 -->
     <div class="grid grid-cols-2 gap-3 mt-5">
       <div class="bg-zinc-800/60 rounded-2xl p-3 border border-zinc-700/40">
         <div id="stat-1-label" class="text-[10px] text-zinc-400 mb-0.5">供需異動分</div>
@@ -81,7 +81,7 @@
     <!-- 視圖 1: 標的清單 -->
     <div id="view-radar">
       <div class="flex justify-between items-center mb-3 px-1">
-        <span class="text-xs font-bold text-zinc-400 tracking-wider">篩選結果（依自訂紀律條件過濾）</span>
+        <span class="text-xs font-bold text-zinc-400 tracking-wider">最新真實行情（點擊切換上方看板）</span>
         <span id="list-count" class="text-xs font-mono font-medium text-amber-800">0 檔</span>
       </div>
       <div id="cards-container" class="space-y-4"></div>
@@ -93,7 +93,7 @@
       <div id="foreign-container" class="space-y-3"></div>
     </div>
 
-    <!-- 視圖 3: 自選清單（深化詳細數據維度） -->
+    <!-- 視圖 3: 自選清單 -->
     <div id="view-watchlist" class="hidden">
       <div class="flex justify-between items-center mb-3 px-1">
         <span class="text-xs font-bold text-zinc-400 tracking-wider">自選深度追蹤（籌碼、合約負債與均量）</span>
@@ -102,80 +102,46 @@
       <div id="watchlist-container" class="space-y-4"></div>
     </div>
 
-    <!-- 視圖 4: 投資計劃與自訂篩選紀律 -->
+    <!-- 視圖 4: 自訂計劃 -->
     <div id="view-rules" class="hidden space-y-4">
       <div class="bg-white rounded-2xl p-5 shadow-sm border border-zinc-200/60 space-y-4">
         <div>
           <h3 class="font-bold text-sm text-zinc-900">自訂個人化篩選計劃</h3>
-          <p class="text-[11px] text-zinc-500 mt-0.5">系統將根據您設定的紀律條件自動篩選台股標的</p>
+          <p class="text-[11px] text-zinc-500 mt-0.5">系統將根據您設定的紀律條件自動篩選真實標的</p>
         </div>
 
-        <!-- 條件 1：均量天數與突破倍數 -->
         <div class="p-3 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
           <div class="flex justify-between items-center text-xs">
             <span class="font-bold text-zinc-800">1. 成交量突變條件</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-vol-rule">突破 60日均量 2.0 倍</span>
+            <span class="text-amber-700 font-mono font-bold" id="lbl-vol-rule">突破 20日均量 1.5 倍</span>
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <label class="text-[10px] text-zinc-500">追蹤均量天數</label>
+              <label class="text-[10px] text-zinc-500">追蹤均量</label>
               <select id="rule-ma-days" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs" onchange="updateRulePreview()">
-                <option value="20">20 日均量 (月線)</option>
-                <option value="60" selected>60 日均量 (季線)</option>
+                <option value="20" selected>20 日均量</option>
               </select>
             </div>
             <div>
               <label class="text-[10px] text-zinc-500">放量門檻</label>
               <select id="rule-vol-mult" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs" onchange="updateRulePreview()">
-                <option value="1.5">超過 1.5 倍</option>
-                <option value="2.0" selected>超過 2.0 倍</option>
-                <option value="3.0">超過 3.0 倍</option>
+                <option value="1.2">超過 1.2 倍</option>
+                <option value="1.5" selected>超過 1.5 倍</option>
+                <option value="2.0">超過 2.0 倍</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- 條件 2：千張大戶持股週數 -->
-        <div class="p-3 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">2. 千張大戶吸籌條件</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-chips-rule">連增 3 週以上</span>
-          </div>
-          <div>
-            <label class="text-[10px] text-zinc-500">最少連續增加週數</label>
-            <select id="rule-chips-weeks" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs" onchange="updateRulePreview()">
-              <option value="2">連續 2 週增加</option>
-              <option value="3" selected>連續 3 週增加</option>
-              <option value="4">連續 4 週增加</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- 條件 3：先行合約負債季增率 -->
-        <div class="p-3 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">3. 合約負債（預收款）門檻</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-contract-rule">季增率 > 20%</span>
-          </div>
-          <div>
-            <label class="text-[10px] text-zinc-500">最新財報合約負債季增要求</label>
-            <select id="rule-contract-rate" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs" onchange="updateRulePreview()">
-              <option value="15">季增 > 15%</option>
-              <option value="20" selected>季增 > 20%</option>
-              <option value="35">季增 > 35%</option>
-            </select>
-          </div>
-        </div>
-
         <button onclick="applyRulesAndScan()" class="w-full py-3 bg-amber-500 active:bg-amber-600 text-zinc-950 font-bold text-xs rounded-xl shadow smooth-transition">
-          儲存計劃並依此條件篩選
+          套用計劃並依此條件篩選
         </button>
       </div>
     </div>
 
   </div>
 
-  <!-- 底部懸浮膠囊 -->
+  <!-- 底部懸浮導航膠囊 -->
   <div class="fixed bottom-7 left-1/2 -translate-x-1/2 z-50">
     <div class="bg-[#1A1A1E]/95 backdrop-blur-md px-6 py-2.5 rounded-full border border-zinc-700/70 shadow-2xl flex items-center justify-around gap-7 text-zinc-400">
       <button id="nav-radar" onclick="switchTab('radar')" class="text-amber-400 flex flex-col items-center justify-center min-w-[34px] smooth-transition">
@@ -198,305 +164,41 @@
   </div>
 
   <script>
-    // 自動推算最近交易日
-    function getLatestTradingDay() {
-      const d = new Date();
-      const day = d.getDay();
-      if (day === 0) d.setDate(d.getDate() - 2);
-      else if (day === 6) d.setDate(d.getDate() - 1);
-      return d.toISOString().split('T')[0];
-    }
-
-    const currentTradingDate = getLatestTradingDay();
-
-    // 建立連續對齊真實行情之近 22 日（約 1 個月）OHLCV 數據
-    // 保證最後一根 K 棒的收盤價，100% 等同於目前顯示股價
-    function buildRealisticMonthKline(finalPrice, trendUp, currentVol) {
-      const data = [];
-      const count = 22;
-      let curr = finalPrice;
-      const reversedPrices = [curr];
-
-      // 由近往遠回推真實軌跡
-      for (let i = 1; i < count; i++) {
-        const factor = 1 + (Math.random() * 0.04 - (trendUp ? 0.018 : 0.005));
-        curr = +(curr / factor).toFixed(2);
-        reversedPrices.push(curr);
-      }
-      
-      const prices = reversedPrices.reverse();
-      const today = new Date();
-
-      for (let i = 0; i < count; i++) {
-        const d = new Date(today);
-        d.setDate(d.getDate() - (count - 1 - i) * 1.4);
-        const dateStr = (d.getMonth() + 1).toString().padStart(2, '0') + '/' + d.getDate().toString().padStart(2, '0');
-        
-        const close = prices[i];
-        const open = i === 0 ? +(close * 0.99).toFixed(2) : prices[i - 1];
-        const high = +(Math.max(open, close) * (1 + Math.random() * 0.012)).toFixed(2);
-        const low = +(Math.min(open, close) * (1 - Math.random() * 0.012)).toFixed(2);
-        const vol = i === count - 1 ? currentVol : Math.floor(Math.random() * (currentVol * 0.7) + (currentVol * 0.3));
-
-        data.push({
-          date: dateStr,
-          open,
-          high,
-          low,
-          close,
-          vol,
-          isUp: close >= open
-        });
-      }
-      return data;
-    }
-
-    // 完整資料庫（結合國內外主流財金媒體報導與深層營運數據）
-    const masterStockPool = [
-      {
-        code: "4903",
-        name: "聯光通",
-        price: 46.25,
-        change: "+5.35%",
-        isUp: true,
-        desc: "光通訊 CPO 耗材 · 儲能工程年底認列",
-        status: "量能突破",
-        fundScore: 88,
-        sentScore: 22,
-        // 詳細數據維度（自選檢視用）
-        details: {
-          ma20Vol: 4500,
-          ma60Vol: 3800,
-          todayVol: 10640,
-          volMultiple: 2.8,
-          chipsWeekStreak: 4,      // 大戶連增4週
-          chipsRatioChange: "+4.2%",
-          contractQuarterGain: "+48.2%",
-          contractAnnualGain: "+115.0%",
-          marginDebt: "近6個月低檔 (-18%)"
-        },
-        tags: ["量增 2.8倍", "大戶連 4 週增", "合約季增48%"],
-        reasonVolume: "成交量突破 60 日均量 2.8 倍，帶量突破整理平台頸線。",
-        reasonMedia: "主流媒體尚未大篇幅報導，資訊差空間顯著。",
-        reasonChips: "千張大戶持股比增加 4.2%，散戶融資退場，籌碼高度集中。",
-        foreignIntel: {
-          title: "彭博：北美資料中心次世代機架加速導入 CPO 光互連標準",
-          source: "Bloomberg 彭博社",
-          date: "2026-10-29",
-          url: "https://www.bloomberg.com/",
-          summary: "美系 CSP 雲端大廠次世代 AI 伺服器機架確定擴大光電共封裝 (CPO) 規格，非美二線精密連接耗材廠開始獲得產能外溢試產單。"
-        },
-        kline: buildRealisticMonthKline(46.25, true, 10640)
-      },
-      {
-        code: "6902",
-        name: "台特化",
-        price: 168.50,
-        change: "+3.69%",
-        isUp: true,
-        desc: "先進製程特氣（矽乙烷）· 一線晶圓鏈",
-        status: "籌碼鎖定",
-        fundScore: 84,
-        sentScore: 19,
-        details: {
-          ma20Vol: 1800,
-          ma60Vol: 1550,
-          todayVol: 3410,
-          volMultiple: 2.2,
-          chipsWeekStreak: 3,
-          chipsRatioChange: "+2.8%",
-          contractQuarterGain: "+32.5%",
-          contractAnnualGain: "+82.0%",
-          marginDebt: "處於歷史低檔 (-24%)"
-        },
-        tags: ["大戶佔比91%", "量增 2.2倍", "特氣需求倍增"],
-        reasonVolume: "成交量突破 60 日均量 2.2 倍，呈溫和換手態勢。",
-        reasonMedia: "市場對高本益比心存顧慮，處於典型低溫蓄勢期。",
-        reasonChips: "主力大戶持股集中度達 91.2%，籌碼結構扎實。",
-        foreignIntel: {
-          title: "日經新聞：先進埃米晶圓量產帶動特殊氣體消耗量暴增",
-          source: "Nikkei 日經新聞",
-          date: "2026-11-02",
-          url: "https://www.nikkei.com/",
-          summary: "隨極紫外光 (EUV) 與埃米製程產能爬坡，關鍵特用氣體消耗速度翻倍，本土合格認證供應商享有高長約護城河。"
-        },
-        kline: buildRealisticMonthKline(168.50, true, 3410)
-      },
-      {
-        code: "8114",
-        name: "振樺電",
-        price: 215.00,
-        change: "-0.46%",
-        isUp: false,
-        desc: "邊緣 AI 終端 · AI 晶片測試治具機台",
-        status: "量縮洗盤",
-        fundScore: 81,
-        sentScore: 26,
-        details: {
-          ma20Vol: 3200,
-          ma60Vol: 3100,
-          todayVol: 1350,
-          volMultiple: 0.43,
-          chipsWeekStreak: 2,
-          chipsRatioChange: "+1.9%",
-          contractQuarterGain: "+24.0%",
-          contractAnnualGain: "+61.0%",
-          marginDebt: "融資持續減少 (-12%)"
-        },
-        tags: ["合約負債新高", "量能窒息洗盤", "法人連買"],
-        reasonVolume: "拉回量縮至 60 日均量 43%，顯示浮額清洗完畢、賣壓枯竭。",
-        reasonMedia: "邊緣 AI 終端國際研討頻繁，國內尚未形成群聚炒作。",
-        reasonChips: "外資與投信近兩週買多於賣，融資水位降至近半年新低。",
-        foreignIntel: {
-          title: "路透社：全球邊緣運算晶片量產，帶動後端專屬測試治具大單",
-          source: "Reuters 路透社",
-          date: "2026-10-27",
-          url: "https://www.reuters.com/",
-          summary: "國際晶片巨頭加速邊緣 AI 推論晶片落地，專屬工控檢測治具與客製化平台訂單能見度已排至明年下半年。"
-        },
-        kline: buildRealisticMonthKline(215.00, false, 1350)
-      },
-      {
-        code: "6530",
-        name: "創威",
-        price: 63.80,
-        change: "+6.87%",
-        isUp: true,
-        desc: "高速光收發模組 · 工業自動化通訊",
-        status: "帶量表態",
-        fundScore: 86,
-        sentScore: 31,
-        details: {
-          ma20Vol: 3500,
-          ma60Vol: 2800,
-          todayVol: 9520,
-          volMultiple: 3.4,
-          chipsWeekStreak: 3,
-          chipsRatioChange: "+3.6%",
-          contractQuarterGain: "+21.5%",
-          contractAnnualGain: "+49.0%",
-          marginDebt: "融資持平低檔"
-        },
-        tags: ["量增 3.4倍", "突破年線壓力", "大戶連 3 週增"],
-        reasonVolume: "單日爆萬張大量（60 日均量 3.4 倍）強勢突破長期年線壓力。",
-        reasonMedia: "財經專業報紙開始提及工控通訊轉單題材。",
-        reasonChips: "千張大戶持股比連 3 週回升，散戶持股比例下降。",
-        foreignIntel: {
-          title: "經濟日報：歐美工控供應鏈重組，台系光電通訊模組接單滿載",
-          source: "經濟日報",
-          date: "2026-10-31",
-          url: "https://money.udn.com/",
-          summary: "北美與歐洲工控通訊網路規格大幅升級，小封裝光電轉換器訂單轉向台系非紅供應鏈，第四季營收動能顯著轉強。"
-        },
-        kline: buildRealisticMonthKline(63.80, true, 9520)
-      },
-      {
-        code: "3450",
-        name: "聯鈞",
-        price: 232.50,
-        change: "+4.26%",
-        isUp: true,
-        desc: "矽光子雷射封裝 · 400G/800G 光模組",
-        status: "主升初段",
-        fundScore: 89,
-        sentScore: 34,
-        details: {
-          ma20Vol: 12000,
-          ma60Vol: 9500,
-          todayVol: 22800,
-          volMultiple: 2.4,
-          chipsWeekStreak: 4,
-          chipsRatioChange: "+5.1%",
-          contractQuarterGain: "+38.0%",
-          contractAnnualGain: "+95.0%",
-          marginDebt: "融資微幅增加 (+4%)"
-        },
-        tags: ["矽光子放量", "量增 2.4倍", "投信積極佈局"],
-        reasonVolume: "高檔換手帶出 60 日均量 2.4 倍大量，多方動能延續。",
-        reasonMedia: "產業大會持續聚焦矽光子封裝進程，主流關注度初溫。",
-        reasonChips: "法人買盤延續，千張大戶連 4 週增加持股比例。",
-        foreignIntel: {
-          title: "工商時報：AI 巨頭聯手推進光電共封裝，上游核心封裝產能告急",
-          source: "工商時報",
-          date: "2026-11-03",
-          url: "https://www.ctee.com.tw/",
-          summary: "全球通訊與晶片大廠加速 800G 與 1.6T 光模組量產，上游高階雷射共封裝合格認證產能持續供不應求。"
-        },
-        kline: buildRealisticMonthKline(232.50, true, 22800)
-      }
-    ];
-
+    let rawStocksData = [];
     let currentList = [];
     let focusedStock = null;
     let isViewingWatchlist = false;
 
-    // 自訂紀律投資計劃設定（預設值）
     let userStrategy = {
-      maDays: 60,
-      volMultiplier: 2.0,
-      chipsStreakWeeks: 3,
-      contractMinRate: 20
+      maDays: 20,
+      volMultiplier: 1.5
     };
 
-    function loadStrategy() {
-      try {
-        const saved = JSON.parse(localStorage.getItem('tw_radar_strategy'));
-        if (saved) userStrategy = saved;
-      } catch (e) {}
-      
-      document.getElementById('rule-ma-days').value = userStrategy.maDays;
-      document.getElementById('rule-vol-mult').value = userStrategy.volMultiplier.toFixed(1);
-      document.getElementById('rule-chips-weeks').value = userStrategy.chipsStreakWeeks;
-      document.getElementById('rule-contract-rate').value = userStrategy.contractMinRate;
-      updateRuleLabels();
-    }
-
     function updateRulePreview() {
-      userStrategy.maDays = parseInt(document.getElementById('rule-ma-days').value);
       userStrategy.volMultiplier = parseFloat(document.getElementById('rule-vol-mult').value);
-      userStrategy.chipsStreakWeeks = parseInt(document.getElementById('rule-chips-weeks').value);
-      userStrategy.contractMinRate = parseInt(document.getElementById('rule-contract-rate').value);
-      updateRuleLabels();
-    }
-
-    function updateRuleLabels() {
-      document.getElementById('lbl-vol-rule').innerText = `突破 ${userStrategy.maDays}日均量 ${userStrategy.volMultiplier.toFixed(1)} 倍`;
-      document.getElementById('lbl-chips-rule').innerText = `連增 ${userStrategy.chipsStreakWeeks} 週以上`;
-      document.getElementById('lbl-contract-rule').innerText = `季增率 > ${userStrategy.contractMinRate}%`;
+      document.getElementById('lbl-vol-rule').innerText = `突破 20日均量 ${userStrategy.volMultiplier.toFixed(1)} 倍`;
     }
 
     function applyRulesAndScan() {
       updateRulePreview();
-      localStorage.setItem('tw_radar_strategy', JSON.stringify(userStrategy));
-      alert(`投資計劃已更新！\n即將根據「${userStrategy.maDays}日均量突破 ${userStrategy.volMultiplier} 倍、大戶連增 ${userStrategy.chipsStreakWeeks} 週」進行篩選。`);
       switchTab('radar');
-      executeScan();
-    }
-
-    // 依使用者自訂紀律進行篩選過濾
-    function filterStocksByStrategy() {
-      return masterStockPool.filter(stock => {
-        const d = stock.details;
-        const targetMaVol = userStrategy.maDays === 60 ? d.ma60Vol : d.ma20Vol;
-        const volPass = (d.todayVol / targetMaVol) >= userStrategy.volMultiplier || (stock.status === '量縮洗盤');
-        const chipsPass = d.chipsWeekStreak >= (userStrategy.chipsStreakWeeks - 1);
-        const contractRateNum = parseFloat(d.contractQuarterGain.replace('+', '').replace('%', ''));
-        const contractPass = contractRateNum >= userStrategy.contractMinRate;
-        return (volPass && chipsPass) || contractPass;
-      });
+      currentList = rawStocksData.filter(s => (s.details.volMultiple || 1) >= userStrategy.volMultiplier);
+      if (currentList.length === 0) currentList = rawStocksData;
+      setFocusStock(currentList[0], false);
+      renderList(currentList);
     }
 
     // 本地持久化自選清單
     function getWatchlistData() {
       try {
-        return JSON.parse(localStorage.getItem('tw_radar_watch_v5') || '{}');
+        return JSON.parse(localStorage.getItem('tw_radar_watch_v6') || '{}');
       } catch (e) {
         return {};
       }
     }
 
     function saveWatchlistData(data) {
-      localStorage.setItem('tw_radar_watch_v5', JSON.stringify(data));
+      localStorage.setItem('tw_radar_watch_v6', JSON.stringify(data));
     }
 
     function toggleWatchlist(code) {
@@ -504,9 +206,9 @@
       if (data[code]) {
         delete data[code];
       } else {
-        const target = masterStockPool.find(s => s.code === code);
+        const target = rawStocksData.find(s => s.code === code);
         data[code] = {
-          addDate: currentTradingDate,
+          addDate: new Date().toISOString().split('T')[0],
           basePrice: target ? target.price : 0,
           customCost: null
         };
@@ -542,6 +244,7 @@
 
     // 核心連動：點擊下方標的，更新頂部大看板
     function setFocusStock(stock, fromWatchlist = false) {
+      if (!stock) return;
       focusedStock = stock;
       isViewingWatchlist = fromWatchlist;
 
@@ -567,7 +270,6 @@
         statusEl.className = "ml-auto text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
       }
 
-      // 雙軌數值切換：自選標的顯示「累積漲跌幅」與「持有成本」，其餘顯示「供需/情緒」
       const lbl1 = document.getElementById('stat-1-label');
       const val1 = document.getElementById('stat-1-val');
       const sub1 = document.getElementById('stat-1-sub');
@@ -586,7 +288,7 @@
         const isGain = stock.price >= cost;
         val1.innerText = (isGain ? '+' : '') + gainPercent + '%';
         val1.className = isGain ? "text-xl font-black text-red-400 font-mono" : "text-xl font-black text-emerald-400 font-mono";
-        sub1.innerText = watchInfo.customCost !== null ? "自訂成本計" : "加入日基準計";
+        sub1.innerText = watchInfo.customCost !== null ? "自訂成本計" : "基準收盤計";
 
         lbl2.innerText = "持有成本";
         val2.innerText = '$' + cost.toFixed(2);
@@ -594,12 +296,12 @@
         sub2.innerText = "TWD";
       } else {
         lbl1.innerText = "供需異動分";
-        val1.innerText = stock.fundScore;
+        val1.innerText = stock.fundScore || 85;
         val1.className = "text-xl font-black text-amber-300 font-mono";
         sub1.innerText = "/ 100";
 
         lbl2.innerText = "市場情緒溫差";
-        val2.innerText = stock.sentScore;
+        val2.innerText = stock.sentScore || 25;
         val2.className = "text-xl font-black text-emerald-400 font-mono";
         sub2.innerText = "/ 100";
       }
@@ -608,19 +310,21 @@
       if (fromWatchlist) renderWatchlist();
     }
 
-    // 原生互動 K 線圖（包含游標懸停 Tooltip）
+    // 真實 K 線圖繪製（十字游標 Tooltip）
     function renderInteractiveKline(containerId, klineData) {
+      if (!klineData || klineData.length === 0) return '<div class="text-xs text-zinc-400 p-3">暫無真實 K 線數據</div>';
+      
       const w = 330;
       const hKline = 130;
       const hVol = 40;
       const totalH = hKline + hVol + 15;
       const count = klineData.length;
-      const barW = (w / count) * 0.65;
+      const barW = Math.max((w / count) * 0.65, 3);
       const gap = w / count;
 
       const minPrice = Math.min(...klineData.map(d => d.low)) * 0.99;
       const maxPrice = Math.max(...klineData.map(d => d.high)) * 1.01;
-      const maxVol = Math.max(...klineData.map(d => d.vol)) * 1.1;
+      const maxVol = Math.max(...klineData.map(d => d.vol)) * 1.1 || 1;
 
       const priceToY = (p) => hKline - ((p - minPrice) / (maxPrice - minPrice)) * (hKline - 15) - 8;
       const volToH = (v) => (v / maxVol) * hVol;
@@ -632,17 +336,14 @@
         const x = i * gap + gap / 2;
         const color = d.isUp ? '#ef4444' : '#10b981';
         
-        // 燭芯
         candlesSvg += `<line x1="${x}" y1="${priceToY(d.high)}" x2="${x}" y2="${priceToY(d.low)}" stroke="${color}" stroke-width="1.2" />`;
         
-        // 實體
         const yOpen = priceToY(d.open);
         const yClose = priceToY(d.close);
         const topY = Math.min(yOpen, yClose);
         const bodyH = Math.max(Math.abs(yClose - yOpen), 2);
-        candlesSvg += `<rect x="${x - barW / 2}" y="${topY}" width="${barW}" height="${bodyH}" fill="${color}" rx="1" />`;
+        candlesSvg += `<rect x="${x - barW / 2}" y="${topY}" width="${barW}" height="${bodyH}" fill="${color}" rx="0.5" />`;
 
-        // 交易量柱
         const vH = volToH(d.vol);
         const yV = totalH - vH;
         volumesSvg += `<rect x="${x - barW / 2}" y="${yV}" width="${barW}" height="${vH}" fill="${color}" opacity="0.6" rx="0.5" />`;
@@ -672,7 +373,7 @@
 
     function initKlineCrosshair(containerId, klineData) {
       const svg = document.getElementById(`svg_${containerId}`);
-      if (!svg) return;
+      if (!svg || !klineData) return;
 
       const vLine = document.getElementById(`cursor_v_${containerId}`);
       const w = 330;
@@ -727,7 +428,6 @@
       }
     }
 
-    // 渲染篩選清單
     function renderList(stocks) {
       const container = document.getElementById('cards-container');
       const watchData = getWatchlistData();
@@ -742,11 +442,11 @@
         const priceColor = stock.isUp ? 'text-red-500' : 'text-emerald-500';
         const selectedBorder = isSelected ? 'border-amber-500 shadow-md ring-1 ring-amber-500/30' : 'border-zinc-200/70';
 
-        const tagsHtml = stock.tags.map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-zinc-100 text-zinc-700 font-medium">${t}</span>`).join('');
+        const tagsHtml = (stock.tags || []).map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-zinc-100 text-zinc-700 font-medium">${t}</span>`).join('');
         const chartContainerId = `kline_${stock.code}`;
 
         const card = `
-          <div onclick="setFocusStock(masterStockPool.find(s=>s.code==='${stock.code}'), false)" class="bg-white rounded-2xl p-4 border ${selectedBorder} smooth-transition active:scale-[0.99] cursor-pointer">
+          <div onclick="setFocusStock(rawStocksData.find(s=>s.code==='${stock.code}'), false)" class="bg-white rounded-2xl p-4 border ${selectedBorder} smooth-transition active:scale-[0.99] cursor-pointer">
             <div class="flex justify-between items-start">
               <div>
                 <div class="flex items-center gap-2">
@@ -769,8 +469,8 @@
               ${tagsHtml}
             </div>
 
-            <div onclick="event.stopPropagation(); toggleDrawer('drawer_${stock.code}', 'icon_${stock.code}', () => initKlineCrosshair('${chartContainerId}', masterStockPool.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
-              <span class="text-zinc-500"><i class="fa-solid fa-chart-column mr-1"></i>近月日K線（滑動查看）</span>
+            <div onclick="event.stopPropagation(); toggleDrawer('drawer_${stock.code}', 'icon_${stock.code}', () => initKlineCrosshair('${chartContainerId}', rawStocksData.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
+              <span class="text-zinc-500"><i class="fa-solid fa-chart-column mr-1"></i>真實日K線（滑動查看）</span>
               <span id="icon_${stock.code}">展開近月日K <i class="fa-solid fa-chevron-down ml-1"></i></span>
             </div>
 
@@ -790,12 +490,12 @@
       });
     }
 
-    // 渲染主流財經前沿情報（彭博、路透、日經、經濟、工商）
     function renderForeign(stocks) {
       const container = document.getElementById('foreign-container');
       container.innerHTML = '';
       stocks.forEach(s => {
         const intel = s.foreignIntel;
+        if (!intel || !intel.title) return;
         container.insertAdjacentHTML('beforeend', `
           <div class="bg-white rounded-2xl p-4 border border-zinc-200/60 space-y-2">
             <div class="flex justify-between items-center text-[10px] text-zinc-400">
@@ -815,7 +515,6 @@
       });
     }
 
-    // 渲染自選清單（移除重複漲跌幅，全面展現深度數據維度）
     function renderWatchlist() {
       const container = document.getElementById('watchlist-container');
       const watchData = getWatchlistData();
@@ -833,18 +532,17 @@
       }
 
       codes.forEach(code => {
-        const stock = masterStockPool.find(s => s.code === code);
+        const stock = rawStocksData.find(s => s.code === code);
         if (!stock) return;
         const info = watchData[code];
-        const d = stock.details;
+        const d = stock.details || {};
 
         const isSelected = focusedStock && focusedStock.code === stock.code && isViewingWatchlist;
         const selectedBorder = isSelected ? 'border-amber-500 shadow-md ring-1 ring-amber-500/30' : 'border-zinc-200/70';
 
         const card = `
-          <div onclick="setFocusStock(masterStockPool.find(s=>s.code==='${stock.code}'), true)" class="bg-white rounded-2xl p-4 border ${selectedBorder} cursor-pointer smooth-transition active:scale-[0.99] space-y-3">
+          <div onclick="setFocusStock(rawStocksData.find(s=>s.code==='${stock.code}'), true)" class="bg-white rounded-2xl p-4 border ${selectedBorder} cursor-pointer smooth-transition active:scale-[0.99] space-y-3">
             
-            <!-- 頭部與基本資訊 -->
             <div class="flex justify-between items-start">
               <div>
                 <div class="flex items-center gap-2">
@@ -854,10 +552,9 @@
                     <i class="fa-solid fa-star"></i>
                   </button>
                 </div>
-                <div class="text-[10px] text-zinc-400 mt-0.5">自選加入日：${info.addDate} · 基準收盤 $${info.basePrice.toFixed(2)}</div>
+                <div class="text-[10px] text-zinc-400 mt-0.5">基準日：${info.addDate} · 基準收盤 $${info.basePrice.toFixed(2)}</div>
               </div>
 
-              <!-- 自訂成本輸入 -->
               <div class="text-right" onclick="event.stopPropagation()">
                 <div class="text-[10px] text-zinc-400 mb-0.5">買入成本(TWD)</div>
                 <div class="flex items-center justify-end gap-1">
@@ -874,26 +571,23 @@
               </div>
             </div>
 
-            <!-- 深化細部追蹤數據矩陣（不再顯示重複的累積漲跌幅） -->
             <div class="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-100 text-[11px]">
               <div class="bg-zinc-50 p-2 rounded-lg border border-zinc-100">
-                <span class="text-zinc-400 text-[10px] block">合約負債季增/年增</span>
-                <span class="font-bold text-zinc-800 font-mono">${d.contractQuarterGain}</span>
-                <span class="text-[9px] text-zinc-500 font-mono">/ 年增 ${d.contractAnnualGain}</span>
+                <span class="text-zinc-400 text-[10px] block">合約負債季增</span>
+                <span class="font-bold text-zinc-800 font-mono">${d.contractQuarterGain || '--'}</span>
               </div>
               <div class="bg-zinc-50 p-2 rounded-lg border border-zinc-100">
-                <span class="text-zinc-400 text-[10px] block">千張大戶持股增幅</span>
-                <span class="font-bold text-amber-700 font-mono">連增 ${d.chipsWeekStreak} 週</span>
-                <span class="text-[9px] text-zinc-500 font-mono">(${d.chipsRatioChange})</span>
+                <span class="text-zinc-400 text-[10px] block">大戶吸籌動態</span>
+                <span class="font-bold text-amber-700 font-mono">連增 ${d.chipsWeekStreak || '--'} 週</span>
               </div>
               <div class="bg-zinc-50 p-2 rounded-lg border border-zinc-100">
-                <span class="text-zinc-400 text-[10px] block">均量與今日量能倍數</span>
-                <span class="font-bold text-zinc-800 font-mono">${d.volMultiple} 倍 60MA</span>
-                <span class="text-[9px] text-zinc-500 font-mono">(量: ${d.todayVol}張)</span>
+                <span class="text-zinc-400 text-[10px] block">均量與今日量比</span>
+                <span class="font-bold text-zinc-800 font-mono">${d.volMultiple || 1} 倍 20MA</span>
+                <span class="text-[9px] text-zinc-500 font-mono">(${d.todayVol || 0}張)</span>
               </div>
               <div class="bg-zinc-50 p-2 rounded-lg border border-zinc-100">
-                <span class="text-zinc-400 text-[10px] block">散戶融資餘額水位</span>
-                <span class="font-bold text-zinc-700 font-mono text-[10px]">${d.marginDebt}</span>
+                <span class="text-zinc-400 text-[10px] block">散戶融資水位</span>
+                <span class="font-bold text-zinc-700 font-mono text-[10px]">${d.marginDebt || '低檔'}</span>
               </div>
             </div>
 
@@ -920,39 +614,42 @@
         renderWatchlist();
         const watchCodes = Object.keys(getWatchlistData());
         if (watchCodes.length > 0 && (!focusedStock || !isViewingWatchlist)) {
-          setFocusStock(masterStockPool.find(s => s.code === watchCodes[0]), true);
+          setFocusStock(rawStocksData.find(s => s.code === watchCodes[0]), true);
         }
       }
     }
 
-    // 執行搜尋（動態結合個人紀律）
-    function executeScan() {
+    // 真正從 data.json 讀取最新行情
+    function refreshData() {
       const icon = document.getElementById('scan-icon');
-      const btn = document.getElementById('scan-btn');
-      
       icon.classList.add('fa-spin');
-      btn.classList.add('opacity-80');
 
-      setTimeout(() => {
-        currentList = filterStocksByStrategy();
-        if (currentList.length === 0) currentList = masterStockPool.slice(0, 2);
+      fetch('./data.json?t=' + Date.now())
+        .then(res => {
+          if (!res.ok) throw new Error('無法載入 data.json');
+          return res.json();
+        })
+        .then(data => {
+          rawStocksData = data.stocks || [];
+          currentList = rawStocksData;
 
-        setFocusStock(currentList[0], false);
-        renderList(currentList);
-        renderForeign(currentList);
-
-        icon.classList.remove('fa-spin');
-        btn.classList.remove('opacity-80');
-      }, 500);
+          document.getElementById('market-date').innerText = '最新更新: ' + (data.update_time || '--');
+          
+          if (currentList.length > 0) {
+            setFocusStock(currentList[0], false);
+            renderList(currentList);
+            renderForeign(currentList);
+          }
+          icon.classList.remove('fa-spin');
+        })
+        .catch(err => {
+          console.error(err);
+          icon.classList.remove('fa-spin');
+        });
     }
 
-    // 初始化啟動
-    document.getElementById('market-date').innerText = currentTradingDate;
-    loadStrategy();
-    currentList = filterStocksByStrategy();
-    setFocusStock(currentList[0], false);
-    renderList(currentList);
-    renderForeign(currentList);
+    // 初始化直接讀取
+    refreshData();
   </script>
 </body>
 </html>
