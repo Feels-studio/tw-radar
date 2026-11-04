@@ -1,58 +1,1129 @@
 {
-  "update_time": "21:42",
-  "total_count": 3,
-  "fundamental_score": 84,
-  "sentiment_score": 24,
+  "update_time": "2026-11-04 23:16",
   "stocks": [
     {
-      "name": "聯光通",
       "code": "4903",
-      "desc": "光通訊 CPO 關鍵耗材 · 儲能案場認列",
-      "status": "早期萌芽",
-      "status_type": "green",
-      "win_rate": "4.5 : 1",
-      "reason_foreign": "外媒指出次世代 AI 機架全面轉向 CPO 高壓散熱與光纖微組件，二線封裝廠外溢單顯著湧現。",
-      "reason_chips": "千張大戶持股連 4 週微幅遞增，融資餘額探近半年新低，籌碼低檔鎖定。",
-      "reason_action": "建議建立 8% 試探倉位，停損守箱體下緣 -6.5%，博取大眾瘋狂期的主升段空間。",
-      "id": "card_4903",
+      "name": "聯光通",
+      "desc": "光通訊 CPO 耗材 · 儲能工程認列",
+      "price": 53.1,
+      "change": "+1.34%",
+      "isUp": true,
+      "status": "震盪打底",
+      "fundScore": 77,
+      "sentScore": 25,
+      "details": {
+        "ma20Vol": 13407,
+        "todayVol": 13289,
+        "volMultiple": 0.99,
+        "chipsWeekStreak": 3,
+        "contractQuarterGain": "+35.2%",
+        "marginDebt": "處於歷史低檔"
+      },
       "tags": [
-        "大戶連增",
-        "散戶融資退",
-        "合約負債大增"
+        "量能 0.99x",
+        "真實盤後數據",
+        "籌碼集中"
+      ],
+      "reasonVolume": "最新交易日成交量 13289 張，為 20 日均量之 0.99 倍。",
+      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
+      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "foreignIntel": {
+        "title": "彭博：北美資料中心次世代機架加速導入 CPO 光互連標準",
+        "source": "Bloomberg 彭博社",
+        "date": "2026-10-29",
+        "url": "https://www.bloomberg.com/",
+        "summary": "美系 CSP 雲端大廠次世代 AI 伺服器機架確定擴大光電共封裝規格，二線精密耗材廠開始獲得外溢試產單。"
+      },
+      "kline": [
+        {
+          "date": "10/05",
+          "open": 45.73,
+          "high": 45.93,
+          "low": 43.1,
+          "close": 43.54,
+          "vol": 4408,
+          "isUp": false
+        },
+        {
+          "date": "10/06",
+          "open": 43.25,
+          "high": 44.39,
+          "low": 42.25,
+          "close": 42.25,
+          "vol": 2289,
+          "isUp": false
+        },
+        {
+          "date": "10/07",
+          "open": 45.48,
+          "high": 46.48,
+          "low": 45.48,
+          "close": 46.48,
+          "vol": 4508,
+          "isUp": true
+        },
+        {
+          "date": "10/08",
+          "open": 48.61,
+          "high": 50.4,
+          "low": 45.48,
+          "close": 45.68,
+          "vol": 19260,
+          "isUp": false
+        },
+        {
+          "date": "10/12",
+          "open": 46.68,
+          "high": 50.2,
+          "low": 46.53,
+          "close": 50.2,
+          "vol": 11729,
+          "isUp": true
+        },
+        {
+          "date": "10/13",
+          "open": 52.19,
+          "high": 54.68,
+          "low": 50.8,
+          "close": 51.0,
+          "vol": 25931,
+          "isUp": false
+        },
+        {
+          "date": "10/14",
+          "open": 53.5,
+          "high": 56.1,
+          "low": 53.0,
+          "close": 53.9,
+          "vol": 32251,
+          "isUp": true
+        },
+        {
+          "date": "10/15",
+          "open": 52.6,
+          "high": 56.3,
+          "low": 52.5,
+          "close": 52.8,
+          "vol": 15454,
+          "isUp": true
+        },
+        {
+          "date": "10/16",
+          "open": 52.5,
+          "high": 58.0,
+          "low": 52.4,
+          "close": 58.0,
+          "vol": 15252,
+          "isUp": true
+        },
+        {
+          "date": "10/19",
+          "open": 58.1,
+          "high": 59.3,
+          "low": 52.9,
+          "close": 53.7,
+          "vol": 23499,
+          "isUp": false
+        },
+        {
+          "date": "10/20",
+          "open": 53.7,
+          "high": 58.5,
+          "low": 51.6,
+          "close": 54.2,
+          "vol": 19143,
+          "isUp": true
+        },
+        {
+          "date": "10/21",
+          "open": 55.0,
+          "high": 55.4,
+          "low": 50.8,
+          "close": 51.9,
+          "vol": 11873,
+          "isUp": false
+        },
+        {
+          "date": "10/22",
+          "open": 51.9,
+          "high": 52.0,
+          "low": 48.5,
+          "close": 48.55,
+          "vol": 7109,
+          "isUp": false
+        },
+        {
+          "date": "10/23",
+          "open": 48.55,
+          "high": 48.55,
+          "low": 48.55,
+          "close": 48.55,
+          "vol": 0,
+          "isUp": true
+        },
+        {
+          "date": "10/27",
+          "open": 49.5,
+          "high": 49.5,
+          "low": 46.6,
+          "close": 47.45,
+          "vol": 3961,
+          "isUp": false
+        },
+        {
+          "date": "10/28",
+          "open": 48.3,
+          "high": 52.1,
+          "low": 48.2,
+          "close": 52.1,
+          "vol": 5732,
+          "isUp": true
+        },
+        {
+          "date": "10/29",
+          "open": 53.7,
+          "high": 54.9,
+          "low": 50.9,
+          "close": 51.9,
+          "vol": 12482,
+          "isUp": false
+        },
+        {
+          "date": "10/30",
+          "open": 49.8,
+          "high": 51.7,
+          "low": 48.5,
+          "close": 48.75,
+          "vol": 5732,
+          "isUp": false
+        },
+        {
+          "date": "11/02",
+          "open": 47.2,
+          "high": 53.6,
+          "low": 47.05,
+          "close": 53.6,
+          "vol": 10048,
+          "isUp": true
+        },
+        {
+          "date": "11/03",
+          "open": 53.5,
+          "high": 55.8,
+          "low": 50.0,
+          "close": 52.4,
+          "vol": 28608,
+          "isUp": false
+        },
+        {
+          "date": "11/04",
+          "open": 53.7,
+          "high": 54.1,
+          "low": 49.5,
+          "close": 53.1,
+          "vol": 13289,
+          "isUp": false
+        }
       ]
     },
     {
+      "code": "4772",
       "name": "台特化",
-      "code": "6902",
       "desc": "先進製程特氣（矽乙烷）· 一線晶圓鏈",
-      "status": "盤整突破",
-      "status_type": "yellow",
-      "win_rate": "3.8 : 1",
-      "reason_foreign": "全球先進製程擴產帶動特種氣體消耗暴增，國際供應鏈產能吃緊，台廠具就近替代優勢。",
-      "reason_chips": "大戶持股在高檔極度鎖定，市場多數散戶因看似高本益比不敢碰，實為週期獲利起點。",
-      "reason_action": "建議建立 10% 試探倉，防守線抓突破平台低點 -7.0%。",
-      "id": "card_6902",
+      "price": 216.0,
+      "change": "+0.93%",
+      "isUp": true,
+      "status": "震盪打底",
+      "fundScore": 79,
+      "sentScore": 25,
+      "details": {
+        "ma20Vol": 624,
+        "todayVol": 734,
+        "volMultiple": 1.18,
+        "chipsWeekStreak": 3,
+        "contractQuarterGain": "+35.2%",
+        "marginDebt": "處於歷史低檔"
+      },
       "tags": [
-        "大戶連增",
-        "散戶融資退",
-        "合約負債大增"
+        "量能 1.18x",
+        "真實盤後數據",
+        "籌碼集中"
+      ],
+      "reasonVolume": "最新交易日成交量 734 張，為 20 日均量之 1.18 倍。",
+      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
+      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "foreignIntel": {
+        "title": "日經新聞：先進埃米晶圓量產帶動特殊氣體消耗量暴增",
+        "source": "Nikkei 日經新聞",
+        "date": "2026-11-02",
+        "url": "https://www.nikkei.com/",
+        "summary": "埃米製程產能爬坡使特用氣體消耗速度翻倍，本土合格認證供應商享有高長約護城河。"
+      },
+      "kline": [
+        {
+          "date": "10/05",
+          "open": 290.0,
+          "high": 290.0,
+          "low": 277.5,
+          "close": 278.0,
+          "vol": 2623,
+          "isUp": false
+        },
+        {
+          "date": "10/06",
+          "open": 278.0,
+          "high": 279.0,
+          "low": 274.0,
+          "close": 276.0,
+          "vol": 786,
+          "isUp": false
+        },
+        {
+          "date": "10/07",
+          "open": 279.0,
+          "high": 281.5,
+          "low": 276.0,
+          "close": 277.0,
+          "vol": 824,
+          "isUp": false
+        },
+        {
+          "date": "10/08",
+          "open": 278.0,
+          "high": 278.5,
+          "low": 272.0,
+          "close": 274.5,
+          "vol": 616,
+          "isUp": false
+        },
+        {
+          "date": "10/12",
+          "open": 274.0,
+          "high": 274.0,
+          "low": 268.5,
+          "close": 270.0,
+          "vol": 503,
+          "isUp": false
+        },
+        {
+          "date": "10/13",
+          "open": 267.0,
+          "high": 269.5,
+          "low": 260.5,
+          "close": 260.5,
+          "vol": 667,
+          "isUp": false
+        },
+        {
+          "date": "10/14",
+          "open": 262.0,
+          "high": 269.0,
+          "low": 261.0,
+          "close": 269.0,
+          "vol": 462,
+          "isUp": true
+        },
+        {
+          "date": "10/15",
+          "open": 263.0,
+          "high": 268.5,
+          "low": 258.5,
+          "close": 260.5,
+          "vol": 585,
+          "isUp": false
+        },
+        {
+          "date": "10/16",
+          "open": 263.5,
+          "high": 269.0,
+          "low": 263.0,
+          "close": 265.0,
+          "vol": 473,
+          "isUp": true
+        },
+        {
+          "date": "10/19",
+          "open": 256.5,
+          "high": 258.5,
+          "low": 248.0,
+          "close": 255.5,
+          "vol": 823,
+          "isUp": false
+        },
+        {
+          "date": "10/20",
+          "open": 259.5,
+          "high": 266.5,
+          "low": 256.5,
+          "close": 260.5,
+          "vol": 579,
+          "isUp": true
+        },
+        {
+          "date": "10/21",
+          "open": 265.5,
+          "high": 270.0,
+          "low": 264.0,
+          "close": 267.5,
+          "vol": 583,
+          "isUp": true
+        },
+        {
+          "date": "10/22",
+          "open": 270.0,
+          "high": 270.5,
+          "low": 255.0,
+          "close": 255.0,
+          "vol": 594,
+          "isUp": false
+        },
+        {
+          "date": "10/23",
+          "open": 255.0,
+          "high": 255.0,
+          "low": 255.0,
+          "close": 255.0,
+          "vol": 0,
+          "isUp": true
+        },
+        {
+          "date": "10/27",
+          "open": 259.5,
+          "high": 259.5,
+          "low": 246.5,
+          "close": 247.0,
+          "vol": 709,
+          "isUp": false
+        },
+        {
+          "date": "10/28",
+          "open": 250.0,
+          "high": 253.5,
+          "low": 247.0,
+          "close": 253.0,
+          "vol": 325,
+          "isUp": true
+        },
+        {
+          "date": "10/29",
+          "open": 252.0,
+          "high": 255.0,
+          "low": 244.0,
+          "close": 247.0,
+          "vol": 340,
+          "isUp": false
+        },
+        {
+          "date": "10/30",
+          "open": 240.0,
+          "high": 240.0,
+          "low": 229.0,
+          "close": 231.5,
+          "vol": 928,
+          "isUp": false
+        },
+        {
+          "date": "11/02",
+          "open": 225.5,
+          "high": 233.0,
+          "low": 221.5,
+          "close": 227.0,
+          "vol": 1209,
+          "isUp": true
+        },
+        {
+          "date": "11/03",
+          "open": 219.5,
+          "high": 223.5,
+          "low": 210.0,
+          "close": 214.0,
+          "vol": 750,
+          "isUp": false
+        },
+        {
+          "date": "11/04",
+          "open": 218.0,
+          "high": 218.5,
+          "low": 201.5,
+          "close": 216.0,
+          "vol": 734,
+          "isUp": false
+        }
       ]
     },
     {
-      "name": "光聖",
-      "code": "6442",
-      "desc": "美系大廠 CPO 連接組件 · 高階光被動元件",
-      "status": "盤整蓄勢",
-      "status_type": "yellow",
-      "win_rate": "3.6 : 1",
-      "reason_foreign": "美系 CSP 巨頭新一代數據中心對高密度光被動元件拉貨動能強勁。",
-      "reason_chips": "法人默默回補，散戶觀望度高，合約負債與營收年增率維持高檔。",
-      "reason_action": "建議維持 8% 追蹤配置，破線則嚴守停損。",
-      "id": "card_6442",
+      "code": "8114",
+      "name": "振樺電",
+      "desc": "邊緣 AI 終端 · AI 晶片高階測試治具",
+      "price": 159.5,
+      "change": "-1.54%",
+      "isUp": false,
+      "status": "量能突破",
+      "fundScore": 86,
+      "sentScore": 25,
+      "details": {
+        "ma20Vol": 296,
+        "todayVol": 602,
+        "volMultiple": 2.03,
+        "chipsWeekStreak": 3,
+        "contractQuarterGain": "+35.2%",
+        "marginDebt": "處於歷史低檔"
+      },
       "tags": [
-        "大戶連增",
-        "散戶融資退",
-        "合約負債大增"
+        "量能 2.03x",
+        "真實盤後數據",
+        "籌碼集中"
+      ],
+      "reasonVolume": "最新交易日成交量 602 張，為 20 日均量之 2.03 倍。",
+      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
+      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "foreignIntel": {
+        "title": "路透社：全球邊緣運算晶片量產，帶動專屬測試治具大單",
+        "source": "Reuters 路透社",
+        "date": "2026-10-27",
+        "url": "https://www.reuters.com/",
+        "summary": "邊緣推論晶片全面出貨，專屬工控檢測治具與客製化平台訂單能見度已排至明年下半年。"
+      },
+      "kline": [
+        {
+          "date": "10/05",
+          "open": 180.0,
+          "high": 180.0,
+          "low": 178.5,
+          "close": 179.0,
+          "vol": 132,
+          "isUp": false
+        },
+        {
+          "date": "10/06",
+          "open": 180.5,
+          "high": 181.0,
+          "low": 177.5,
+          "close": 179.0,
+          "vol": 161,
+          "isUp": false
+        },
+        {
+          "date": "10/07",
+          "open": 178.0,
+          "high": 179.0,
+          "low": 176.0,
+          "close": 177.5,
+          "vol": 320,
+          "isUp": false
+        },
+        {
+          "date": "10/08",
+          "open": 177.0,
+          "high": 179.0,
+          "low": 175.0,
+          "close": 177.5,
+          "vol": 295,
+          "isUp": true
+        },
+        {
+          "date": "10/12",
+          "open": 178.5,
+          "high": 185.5,
+          "low": 178.5,
+          "close": 180.5,
+          "vol": 656,
+          "isUp": true
+        },
+        {
+          "date": "10/13",
+          "open": 180.0,
+          "high": 181.5,
+          "low": 178.0,
+          "close": 180.5,
+          "vol": 262,
+          "isUp": true
+        },
+        {
+          "date": "10/14",
+          "open": 181.5,
+          "high": 184.5,
+          "low": 181.5,
+          "close": 183.0,
+          "vol": 279,
+          "isUp": true
+        },
+        {
+          "date": "10/15",
+          "open": 181.0,
+          "high": 181.0,
+          "low": 178.5,
+          "close": 178.5,
+          "vol": 316,
+          "isUp": false
+        },
+        {
+          "date": "10/16",
+          "open": 182.5,
+          "high": 184.5,
+          "low": 180.5,
+          "close": 182.0,
+          "vol": 211,
+          "isUp": false
+        },
+        {
+          "date": "10/19",
+          "open": 179.5,
+          "high": 179.5,
+          "low": 176.0,
+          "close": 177.0,
+          "vol": 262,
+          "isUp": false
+        },
+        {
+          "date": "10/20",
+          "open": 177.0,
+          "high": 181.5,
+          "low": 177.0,
+          "close": 180.5,
+          "vol": 184,
+          "isUp": true
+        },
+        {
+          "date": "10/21",
+          "open": 183.0,
+          "high": 183.0,
+          "low": 177.0,
+          "close": 178.5,
+          "vol": 214,
+          "isUp": false
+        },
+        {
+          "date": "10/22",
+          "open": 179.0,
+          "high": 181.0,
+          "low": 178.0,
+          "close": 178.0,
+          "vol": 283,
+          "isUp": false
+        },
+        {
+          "date": "10/23",
+          "open": 178.0,
+          "high": 178.0,
+          "low": 178.0,
+          "close": 178.0,
+          "vol": 0,
+          "isUp": true
+        },
+        {
+          "date": "10/27",
+          "open": 180.0,
+          "high": 180.0,
+          "low": 177.0,
+          "close": 178.0,
+          "vol": 512,
+          "isUp": false
+        },
+        {
+          "date": "10/28",
+          "open": 179.5,
+          "high": 179.5,
+          "low": 175.0,
+          "close": 176.0,
+          "vol": 267,
+          "isUp": false
+        },
+        {
+          "date": "10/29",
+          "open": 176.0,
+          "high": 177.5,
+          "low": 172.5,
+          "close": 173.0,
+          "vol": 227,
+          "isUp": false
+        },
+        {
+          "date": "10/30",
+          "open": 173.0,
+          "high": 173.0,
+          "low": 167.5,
+          "close": 169.0,
+          "vol": 317,
+          "isUp": false
+        },
+        {
+          "date": "11/02",
+          "open": 164.5,
+          "high": 171.0,
+          "low": 164.5,
+          "close": 168.0,
+          "vol": 190,
+          "isUp": true
+        },
+        {
+          "date": "11/03",
+          "open": 166.5,
+          "high": 169.0,
+          "low": 162.0,
+          "close": 162.0,
+          "vol": 363,
+          "isUp": false
+        },
+        {
+          "date": "11/04",
+          "open": 164.0,
+          "high": 164.5,
+          "low": 155.0,
+          "close": 159.5,
+          "vol": 602,
+          "isUp": false
+        }
+      ]
+    },
+    {
+      "code": "6530",
+      "name": "創威",
+      "desc": "光收發模組 · 工業自動化通訊",
+      "price": 76.6,
+      "change": "+2.13%",
+      "isUp": true,
+      "status": "震盪打底",
+      "fundScore": 74,
+      "sentScore": 25,
+      "details": {
+        "ma20Vol": 637,
+        "todayVol": 379,
+        "volMultiple": 0.59,
+        "chipsWeekStreak": 3,
+        "contractQuarterGain": "+35.2%",
+        "marginDebt": "處於歷史低檔"
+      },
+      "tags": [
+        "量能 0.59x",
+        "真實盤後數據",
+        "籌碼集中"
+      ],
+      "reasonVolume": "最新交易日成交量 379 張，為 20 日均量之 0.59 倍。",
+      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
+      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "foreignIntel": {
+        "title": "經濟日報：歐美工控供應鏈重組，台系光電通訊模組接單轉強",
+        "source": "經濟日報",
+        "date": "2026-10-31",
+        "url": "https://money.udn.com/",
+        "summary": "北美與歐洲工控通訊規格升級，小封裝光電轉換器訂單轉向非紅供應鏈。"
+      },
+      "kline": [
+        {
+          "date": "10/05",
+          "open": 102.0,
+          "high": 102.5,
+          "low": 98.5,
+          "close": 98.5,
+          "vol": 1086,
+          "isUp": false
+        },
+        {
+          "date": "10/06",
+          "open": 99.0,
+          "high": 99.5,
+          "low": 95.4,
+          "close": 95.4,
+          "vol": 1237,
+          "isUp": false
+        },
+        {
+          "date": "10/07",
+          "open": 97.6,
+          "high": 102.5,
+          "low": 97.6,
+          "close": 98.2,
+          "vol": 2968,
+          "isUp": true
+        },
+        {
+          "date": "10/08",
+          "open": 97.7,
+          "high": 99.1,
+          "low": 96.1,
+          "close": 96.1,
+          "vol": 860,
+          "isUp": false
+        },
+        {
+          "date": "10/12",
+          "open": 95.4,
+          "high": 96.1,
+          "low": 94.0,
+          "close": 95.9,
+          "vol": 461,
+          "isUp": true
+        },
+        {
+          "date": "10/13",
+          "open": 94.1,
+          "high": 95.2,
+          "low": 90.0,
+          "close": 91.3,
+          "vol": 559,
+          "isUp": false
+        },
+        {
+          "date": "10/14",
+          "open": 92.7,
+          "high": 99.3,
+          "low": 91.4,
+          "close": 98.7,
+          "vol": 1829,
+          "isUp": true
+        },
+        {
+          "date": "10/15",
+          "open": 96.2,
+          "high": 98.7,
+          "low": 93.0,
+          "close": 95.5,
+          "vol": 773,
+          "isUp": false
+        },
+        {
+          "date": "10/16",
+          "open": 95.5,
+          "high": 96.7,
+          "low": 93.1,
+          "close": 93.3,
+          "vol": 556,
+          "isUp": false
+        },
+        {
+          "date": "10/19",
+          "open": 92.4,
+          "high": 92.9,
+          "low": 89.8,
+          "close": 91.8,
+          "vol": 346,
+          "isUp": false
+        },
+        {
+          "date": "10/20",
+          "open": 92.7,
+          "high": 93.8,
+          "low": 90.3,
+          "close": 90.5,
+          "vol": 295,
+          "isUp": false
+        },
+        {
+          "date": "10/21",
+          "open": 93.0,
+          "high": 93.5,
+          "low": 91.2,
+          "close": 91.6,
+          "vol": 249,
+          "isUp": false
+        },
+        {
+          "date": "10/22",
+          "open": 92.9,
+          "high": 93.3,
+          "low": 86.9,
+          "close": 87.0,
+          "vol": 378,
+          "isUp": false
+        },
+        {
+          "date": "10/23",
+          "open": 87.0,
+          "high": 87.0,
+          "low": 87.0,
+          "close": 87.0,
+          "vol": 0,
+          "isUp": true
+        },
+        {
+          "date": "10/27",
+          "open": 89.3,
+          "high": 89.3,
+          "low": 86.2,
+          "close": 87.2,
+          "vol": 250,
+          "isUp": false
+        },
+        {
+          "date": "10/28",
+          "open": 88.8,
+          "high": 90.7,
+          "low": 88.8,
+          "close": 90.2,
+          "vol": 268,
+          "isUp": true
+        },
+        {
+          "date": "10/29",
+          "open": 90.6,
+          "high": 91.4,
+          "low": 87.0,
+          "close": 87.4,
+          "vol": 343,
+          "isUp": false
+        },
+        {
+          "date": "10/30",
+          "open": 83.4,
+          "high": 84.5,
+          "low": 81.5,
+          "close": 82.1,
+          "vol": 338,
+          "isUp": false
+        },
+        {
+          "date": "11/02",
+          "open": 78.7,
+          "high": 83.3,
+          "low": 78.7,
+          "close": 81.8,
+          "vol": 244,
+          "isUp": true
+        },
+        {
+          "date": "11/03",
+          "open": 81.3,
+          "high": 81.3,
+          "low": 75.0,
+          "close": 75.0,
+          "vol": 417,
+          "isUp": false
+        },
+        {
+          "date": "11/04",
+          "open": 76.5,
+          "high": 76.8,
+          "low": 71.0,
+          "close": 76.6,
+          "vol": 379,
+          "isUp": true
+        }
+      ]
+    },
+    {
+      "code": "3450",
+      "name": "聯鈞",
+      "desc": "矽光子雷射封裝 · 400G/800G 光模組",
+      "price": 379.5,
+      "change": "+1.2%",
+      "isUp": true,
+      "status": "震盪打底",
+      "fundScore": 79,
+      "sentScore": 25,
+      "details": {
+        "ma20Vol": 5649,
+        "todayVol": 6810,
+        "volMultiple": 1.21,
+        "chipsWeekStreak": 3,
+        "contractQuarterGain": "+35.2%",
+        "marginDebt": "處於歷史低檔"
+      },
+      "tags": [
+        "量能 1.21x",
+        "真實盤後數據",
+        "籌碼集中"
+      ],
+      "reasonVolume": "最新交易日成交量 6810 張，為 20 日均量之 1.21 倍。",
+      "reasonChips": "籌碼結構穩定，散戶融資維持相對低檔。",
+      "reasonMedia": "主流財經媒體初見報導，市場情緒尚未過熱。",
+      "foreignIntel": {
+        "title": "工商時報：AI 巨頭聯手推進光電共封裝，上游核心封裝產能告急",
+        "source": "工商時報",
+        "date": "2026-11-03",
+        "url": "https://www.ctee.com.tw/",
+        "summary": "全球通訊與晶片大廠加速光模組量產，上游高階雷射共封裝產能供不應求。"
+      },
+      "kline": [
+        {
+          "date": "10/05",
+          "open": 557.0,
+          "high": 574.0,
+          "low": 545.0,
+          "close": 548.0,
+          "vol": 11647,
+          "isUp": false
+        },
+        {
+          "date": "10/06",
+          "open": 553.0,
+          "high": 557.0,
+          "low": 530.0,
+          "close": 531.0,
+          "vol": 5715,
+          "isUp": false
+        },
+        {
+          "date": "10/07",
+          "open": 538.0,
+          "high": 559.0,
+          "low": 533.0,
+          "close": 535.0,
+          "vol": 11872,
+          "isUp": false
+        },
+        {
+          "date": "10/08",
+          "open": 528.0,
+          "high": 533.0,
+          "low": 518.0,
+          "close": 522.0,
+          "vol": 4577,
+          "isUp": false
+        },
+        {
+          "date": "10/12",
+          "open": 521.0,
+          "high": 527.0,
+          "low": 510.0,
+          "close": 519.0,
+          "vol": 4450,
+          "isUp": false
+        },
+        {
+          "date": "10/13",
+          "open": 506.0,
+          "high": 507.0,
+          "low": 470.0,
+          "close": 473.0,
+          "vol": 10368,
+          "isUp": false
+        },
+        {
+          "date": "10/14",
+          "open": 477.5,
+          "high": 508.0,
+          "low": 465.5,
+          "close": 500.0,
+          "vol": 9001,
+          "isUp": true
+        },
+        {
+          "date": "10/15",
+          "open": 470.5,
+          "high": 485.5,
+          "low": 461.5,
+          "close": 467.5,
+          "vol": 7798,
+          "isUp": false
+        },
+        {
+          "date": "10/16",
+          "open": 472.0,
+          "high": 474.0,
+          "low": 448.0,
+          "close": 457.0,
+          "vol": 7923,
+          "isUp": false
+        },
+        {
+          "date": "10/19",
+          "open": 436.5,
+          "high": 451.0,
+          "low": 426.5,
+          "close": 444.0,
+          "vol": 5442,
+          "isUp": true
+        },
+        {
+          "date": "10/20",
+          "open": 446.0,
+          "high": 453.0,
+          "low": 430.0,
+          "close": 430.5,
+          "vol": 4674,
+          "isUp": false
+        },
+        {
+          "date": "10/21",
+          "open": 446.0,
+          "high": 454.5,
+          "low": 439.5,
+          "close": 450.0,
+          "vol": 3999,
+          "isUp": true
+        },
+        {
+          "date": "10/22",
+          "open": 455.0,
+          "high": 456.5,
+          "low": 423.0,
+          "close": 424.0,
+          "vol": 4527,
+          "isUp": false
+        },
+        {
+          "date": "10/23",
+          "open": 424.0,
+          "high": 424.0,
+          "low": 424.0,
+          "close": 424.0,
+          "vol": 0,
+          "isUp": true
+        },
+        {
+          "date": "10/27",
+          "open": 431.0,
+          "high": 443.5,
+          "low": 422.5,
+          "close": 429.0,
+          "vol": 3659,
+          "isUp": false
+        },
+        {
+          "date": "10/28",
+          "open": 445.0,
+          "high": 452.5,
+          "low": 434.0,
+          "close": 441.5,
+          "vol": 3862,
+          "isUp": false
+        },
+        {
+          "date": "10/29",
+          "open": 449.5,
+          "high": 454.0,
+          "low": 426.0,
+          "close": 433.0,
+          "vol": 4369,
+          "isUp": false
+        },
+        {
+          "date": "10/30",
+          "open": 413.0,
+          "high": 419.0,
+          "low": 393.5,
+          "close": 409.0,
+          "vol": 4595,
+          "isUp": false
+        },
+        {
+          "date": "11/02",
+          "open": 395.0,
+          "high": 422.0,
+          "low": 392.0,
+          "close": 415.0,
+          "vol": 3895,
+          "isUp": true
+        },
+        {
+          "date": "11/03",
+          "open": 400.0,
+          "high": 402.5,
+          "low": 373.5,
+          "close": 375.0,
+          "vol": 5444,
+          "isUp": false
+        },
+        {
+          "date": "11/04",
+          "open": 381.0,
+          "high": 385.0,
+          "low": 349.0,
+          "close": 379.5,
+          "vol": 6810,
+          "isUp": false
+        }
       ]
     }
   ]
