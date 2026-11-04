@@ -8,7 +8,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="台股探測">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", sans-serif;
@@ -19,6 +18,9 @@
     .smooth-transition {
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .drawer-content {
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+    }
     .kline-crosshair {
       pointer-events: none;
     }
@@ -26,280 +28,292 @@
 </head>
 <body class="bg-[#121214] text-zinc-900 antialiased select-none">
 
-  <!-- 頂部黑底主看板 -->
-  <div class="bg-[#121214] text-white pt-4 pb-6 px-6 rounded-b-[2.5rem] shadow-2xl">
+  <!-- 頂部主看板 -->
+  <div class="bg-[#121214] text-white pt-5 pb-6 px-6 rounded-b-[2.5rem] shadow-2xl">
     
-    <!-- 頂端列：日期與純文字「篩選標的」按鈕（無圖示、點擊呼吸縮放動畫） -->
-    <div class="flex justify-between items-center mb-5">
+    <!-- 頂端列 -->
+    <div class="flex justify-between items-center mb-6">
       <div>
-        <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">INSTITUTIONAL RADAR</div>
-        <div id="market-date" class="text-xs text-zinc-400 font-medium">連線載入中...</div>
+        <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">MARKET DATA</div>
+        <div id="market-date" class="text-xs text-zinc-400 font-mono mt-0.5">載入中</div>
       </div>
-      <button onclick="executeScan()" id="scan-btn" class="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-zinc-950 font-bold rounded-full shadow-lg shadow-amber-500/20 smooth-transition">
+      <button onclick="executeScan()" id="scan-btn" class="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-zinc-950 font-bold rounded-full shadow-lg shadow-amber-500/20 smooth-transition">
         <span id="scan-text" class="text-xs tracking-wider">篩選標的</span>
       </button>
     </div>
     
-    <!-- 個股主視覺看板 -->
+    <!-- 個股焦點資訊 -->
     <div class="my-2">
-      <div class="flex items-baseline gap-2 mb-1">
+      <div class="flex items-baseline gap-2.5 mb-1">
         <span id="focus-name" class="text-2xl font-bold tracking-tight text-white">--</span>
         <span id="focus-code" class="text-xs font-mono text-zinc-400">----</span>
-        <span id="focus-status" class="ml-auto text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">--</span>
+        <span id="focus-status" class="ml-auto text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-zinc-800 text-amber-400 border border-amber-500/30">--</span>
       </div>
 
       <div class="flex items-baseline gap-3 my-1">
-        <div class="text-5xl font-black tracking-tight" id="focus-price">--</div>
+        <div class="text-5xl font-black tracking-tight font-mono" id="focus-price">--</div>
         <div class="text-sm font-bold font-mono" id="focus-change">--</div>
       </div>
-      <p id="focus-desc" class="text-xs text-zinc-400 mt-1 line-clamp-1">請在下方點選標的切換看板</p>
+      <p id="focus-desc" class="text-xs text-zinc-400 mt-1 line-clamp-1">--</p>
     </div>
 
-    <!-- 雙軌指標卡片（支援點擊展開個股評分細節） -->
+    <!-- 雙軌數據卡 -->
     <div class="grid grid-cols-2 gap-3 mt-5">
-      <div onclick="toggleTopScoreDetail('left')" id="box-stat-1" class="bg-zinc-800/70 active:bg-zinc-700/80 rounded-2xl p-3 border border-zinc-700/50 cursor-pointer smooth-transition">
-        <div class="flex justify-between items-center mb-0.5">
-          <span id="stat-1-label" class="text-[10px] text-zinc-400">供需異動分</span>
-          <span class="text-[9px] text-amber-400/80 font-mono">點擊明細 ▾</span>
+      <div onclick="toggleTopScoreDetail('left')" class="bg-zinc-800/70 active:bg-zinc-700/80 rounded-2xl p-3.5 border border-zinc-700/50 cursor-pointer smooth-transition">
+        <div class="flex justify-between items-center mb-1">
+          <span id="stat-1-label" class="text-[11px] text-zinc-400">供需分數</span>
+          <span class="text-[10px] text-zinc-500">明細</span>
         </div>
         <div class="flex items-baseline gap-1.5">
           <span id="stat-1-val" class="text-xl font-black text-amber-300 font-mono">--</span>
-          <span id="stat-1-sub" class="text-[10px] text-zinc-500">/ 100</span>
+          <span id="stat-1-sub" class="text-[10px] text-zinc-500 font-mono">/ 100</span>
         </div>
       </div>
 
-      <div onclick="toggleTopScoreDetail('right')" id="box-stat-2" class="bg-zinc-800/70 active:bg-zinc-700/80 rounded-2xl p-3 border border-zinc-700/50 cursor-pointer smooth-transition">
-        <div class="flex justify-between items-center mb-0.5">
-          <span id="stat-2-label" class="text-[10px] text-zinc-400">市場情緒溫差</span>
-          <span class="text-[9px] text-emerald-400/80 font-mono">點擊明細 ▾</span>
+      <div onclick="toggleTopScoreDetail('right')" class="bg-zinc-800/70 active:bg-zinc-700/80 rounded-2xl p-3.5 border border-zinc-700/50 cursor-pointer smooth-transition">
+        <div class="flex justify-between items-center mb-1">
+          <span id="stat-2-label" class="text-[11px] text-zinc-400">情緒溫差</span>
+          <span class="text-[10px] text-zinc-500">明細</span>
         </div>
         <div class="flex items-baseline gap-1.5">
           <span id="stat-2-val" class="text-xl font-black text-emerald-400 font-mono">--</span>
-          <span id="stat-2-sub" class="text-[10px] text-zinc-500">/ 100</span>
+          <span id="stat-2-sub" class="text-[10px] text-zinc-500 font-mono">/ 100</span>
         </div>
       </div>
     </div>
 
-    <!-- 點擊分數展開的個股專屬量化細節抽屜 -->
-    <div id="top-score-drawer" class="hidden mt-3 p-3.5 bg-zinc-900/95 border border-zinc-700/80 rounded-2xl text-[11px] text-zinc-300 space-y-2">
-      <div class="flex justify-between items-center border-b border-zinc-800 pb-1.5">
+    <!-- 頂部數據明細抽屜 -->
+    <div id="top-score-drawer" class="hidden mt-3 p-4 bg-zinc-900 border border-zinc-800 rounded-2xl text-xs text-zinc-300 space-y-2">
+      <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
         <span id="drawer-title" class="font-bold text-amber-300">--</span>
-        <span onclick="closeTopScoreDrawer()" class="text-zinc-500 hover:text-white cursor-pointer px-1">✕ 關閉</span>
+        <span onclick="closeTopScoreDrawer()" class="text-zinc-500 hover:text-white cursor-pointer text-[11px]">關閉</span>
       </div>
-      <div id="drawer-body" class="space-y-1.5 leading-relaxed font-mono text-[11px]"></div>
+      <div id="drawer-body" class="space-y-1.5 leading-relaxed font-mono text-[11px] pt-1"></div>
     </div>
   </div>
 
-  <!-- 下半部淺灰內容區 -->
+  <!-- 下半部內容區 -->
   <div class="bg-[#F2F2F7] min-h-screen px-5 pt-6 pb-36 rounded-t-[2rem] -mt-4 shadow-inner">
 
-    <!-- 視圖 1: 標的清單 -->
+    <!-- 視圖 1: 標的 -->
     <div id="view-radar">
       <div class="flex justify-between items-center mb-3 px-1">
-        <span id="active-rule-summary" class="text-[11px] font-bold text-zinc-400 tracking-wider">華爾街多因子篩選結果</span>
-        <span id="list-count" class="text-xs font-mono font-bold text-amber-800">0 檔</span>
+        <span id="active-rule-summary" class="text-xs font-bold text-zinc-500">篩選結果</span>
+        <span id="list-count" class="text-xs font-mono font-bold text-zinc-700">0 檔</span>
       </div>
-      <div id="cards-container" class="space-y-4"></div>
+      <div id="cards-container" class="space-y-3.5"></div>
     </div>
 
-    <!-- 視圖 2: 主流財經前沿情報（直達專文索引） -->
+    <!-- 視圖 2: 前沿 -->
     <div id="view-foreign" class="hidden space-y-3">
-      <div class="text-xs font-bold text-zinc-400 tracking-wider px-1 mb-2">主流財經媒體產業前沿（直達專文索引）</div>
+      <div class="text-xs font-bold text-zinc-500 px-1 mb-2">主流財經媒體報導</div>
       <div id="foreign-container" class="space-y-3"></div>
     </div>
 
-    <!-- 視圖 3: 自選清單（完整前後對比與深度量化矩陣） -->
+    <!-- 視圖 3: 自選 -->
     <div id="view-watchlist" class="hidden">
       <div class="flex justify-between items-center mb-3 px-1">
-        <span class="text-xs font-bold text-zinc-400 tracking-wider">自選深度追蹤（量能均線對比 / 大戶 / 合約負債）</span>
-        <button onclick="clearWatchlist()" class="text-[11px] text-zinc-400 hover:text-red-500">清空</button>
+        <span class="text-xs font-bold text-zinc-500">自選追蹤</span>
+        <button onclick="clearWatchlist()" class="text-xs text-zinc-400 hover:text-red-600">清空</button>
       </div>
-      <div id="watchlist-container" class="space-y-4"></div>
+      <div id="watchlist-container" class="space-y-3.5"></div>
     </div>
 
-    <!-- 視圖 4: 華爾街機構級個人化篩選計劃 -->
+    <!-- 視圖 4: 計劃 -->
     <div id="view-rules" class="hidden space-y-4">
       <div class="bg-white rounded-2xl p-5 shadow-sm border border-zinc-200/60 space-y-4">
         <div class="flex justify-between items-start border-b border-zinc-100 pb-3">
           <div>
-            <h3 class="font-bold text-sm text-zinc-900">華爾街買方機構（Buy-Side）量化篩選計劃</h3>
-            <p class="text-[11px] text-zinc-500 mt-0.5">結合 O'Neil CANSLIM、Minervini VCP 與機構籌碼因子</p>
+            <h3 class="font-bold text-base text-zinc-900">篩選計劃設定</h3>
+            <p class="text-xs text-zinc-400 mt-0.5">點擊各項條件之說明可檢視判斷依據</p>
           </div>
-          <button onclick="resetDefaultStrategy()" class="text-[10px] text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg font-medium">恢復預設</button>
+          <button onclick="resetDefaultStrategy()" class="text-xs text-zinc-500 bg-zinc-100 px-3 py-1 rounded-lg font-medium">重置</button>
         </div>
 
-        <!-- 因子 1：RVOL 相對成交量突破 -->
-        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">1. RVOL 機構相對成交量</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-rvol">60MA 均量 >= 1.5 倍</span>
-          </div>
-          <p class="text-[10px] text-zinc-400">衡量機構資金點火強度（當日成交量對比過去平均量）</p>
-          <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+        <!-- 條件 1：相對成交量 -->
+        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2.5">
+          <div class="flex justify-between items-start">
             <div>
-              <label class="text-[10px] text-zinc-500">對比基準均量</label>
-              <select id="rule-ma-days" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="20">20 日均量 (月均量)</option>
-                <option value="60" selected>60 日均量 (季均量)</option>
+              <div class="text-sm font-bold text-zinc-900">相對成交量 (RVOL)</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-rvol">60日均量 1.5 倍以上</div>
+            </div>
+            <button onclick="toggleRuleExplain('exp-rvol')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
+          </div>
+          <div id="exp-rvol" class="hidden text-xs text-zinc-600 bg-white p-3 rounded-lg border border-zinc-200/70 leading-relaxed">
+            比較當日成交量與過往均量之倍數。數值大於 1.5 倍代表機構資金開始顯著點火進場，脫離底部沉寂期，為展開主升段之首要動能信號。
+          </div>
+          <div class="grid grid-cols-2 gap-2.5 text-xs pt-1">
+            <div>
+              <label class="text-[11px] text-zinc-500">基準均量</label>
+              <select id="rule-ma-days" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+                <option value="20">20 日均量</option>
+                <option value="60" selected>60 日均量</option>
               </select>
             </div>
             <div>
-              <label class="text-[10px] text-zinc-500">最低放量倍數 (RVOL)</label>
-              <select id="rule-vol-mult" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="0.0">不限 (含窒息量洗盤)</option>
-                <option value="1.2">超過 1.2 倍 (溫和放量)</option>
-                <option value="1.5" selected>超過 1.5 倍 (機構點火)</option>
-                <option value="2.0">超過 2.0 倍 (顯著爆量)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- 因子 2：O'Neil RS 相對強度與均線位階 -->
-        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">2. RS 相對大盤強度 & 趨勢位階</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-rs">RS >= 75 · 站上季線</span>
-          </div>
-          <p class="text-[10px] text-zinc-400">William O'Neil 與 Minervini 第二階段多頭排列準則</p>
-          <div class="grid grid-cols-2 gap-2 text-xs pt-1">
-            <div>
-              <label class="text-[10px] text-zinc-500">最低 RS 強度 (1-99)</label>
-              <select id="rule-rs" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="60">RS >= 60 (優於大盤)</option>
-                <option value="75" selected>RS >= 75 (前25%強勢股)</option>
-                <option value="85">RS >= 85 (領頭羊級別)</option>
-              </select>
-            </div>
-            <div>
-              <label class="text-[10px] text-zinc-500">均線結構要求</label>
-              <select id="rule-trend" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="any">不限位階 (含右側突破)</option>
-                <option value="stage2" selected>站上 60MA 季線 (Stage 2)</option>
+              <label class="text-[11px] text-zinc-500">放量倍數</label>
+              <select id="rule-vol-mult" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+                <option value="0.0">不限倍數</option>
+                <option value="1.2">1.2 倍以上</option>
+                <option value="1.5" selected>1.5 倍以上</option>
+                <option value="2.0">2.0 倍以上</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- 因子 3：Smart Money 聰明錢千張大戶吸籌 -->
-        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">3. Smart Money 大戶籌碼吸納</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-chips">大戶連增 >= 2 週</span>
-          </div>
-          <p class="text-[10px] text-zinc-400">追蹤集保千張大戶持股比例連續增加週數與散戶退場</p>
-          <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+        <!-- 條件 2：相對大盤強度與均線 -->
+        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2.5">
+          <div class="flex justify-between items-start">
             <div>
-              <label class="text-[10px] text-zinc-500">千張大戶連增週數</label>
-              <select id="rule-chips" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="1">連增 >= 1 週</option>
-                <option value="2" selected>連增 >= 2 週</option>
-                <option value="3">連增 >= 3 週 (深度鎖碼)</option>
+              <div class="text-sm font-bold text-zinc-900">相對強度 (RS) 與均線位階</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-rs">RS 75 以上 · 站上季線</div>
+            </div>
+            <button onclick="toggleRuleExplain('exp-rs')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
+          </div>
+          <div id="exp-rs" class="hidden text-xs text-zinc-600 bg-white p-3 rounded-lg border border-zinc-200/70 leading-relaxed">
+            RS 衡量個股近一季表現優於大盤之程度（1至99）。大於 75 且股價站上 60 日季線，代表該股處於第二階段多頭趨勢，具備抗跌領漲特質。
+          </div>
+          <div class="grid grid-cols-2 gap-2.5 text-xs pt-1">
+            <div>
+              <label class="text-[11px] text-zinc-500">最低 RS 強度</label>
+              <select id="rule-rs" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+                <option value="60">60 以上</option>
+                <option value="75" selected>75 以上</option>
+                <option value="85">85 以上</option>
               </select>
             </div>
             <div>
-              <label class="text-[10px] text-zinc-500">VCP 近10日振幅上限</label>
-              <select id="rule-vcp" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="30" selected>振幅 <= 30% (標準)</option>
-                <option value="15">振幅 <= 15% (緊密收斂)</option>
+              <label class="text-[11px] text-zinc-500">均線結構</label>
+              <select id="rule-trend" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+                <option value="any">不限位階</option>
+                <option value="stage2" selected>站上 60 日季線</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- 因子 4：合約負債 (RPO 剩餘履約義務) -->
-        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">4. 合約負債 (RPO 在手訂單領先指標)</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-contract">季增 QoQ >= 20%</span>
+        <!-- 條件 3：大戶籌碼與波動收斂 -->
+        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2.5">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-sm font-bold text-zinc-900">大戶籌碼與波動收縮 (VCP)</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-chips">大戶連增 2 週 · 振幅 30% 內</div>
+            </div>
+            <button onclick="toggleRuleExplain('exp-chips')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
           </div>
-          <p class="text-[10px] text-zinc-400">華爾街硬體與設備分析師預判未來 2~3 季營收爆發之核心指標</p>
-          <div>
-            <select id="rule-contract" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-              <option value="10">合約負債季增 >= 10%</option>
-              <option value="20" selected>合約負債季增 >= 20% (訂單加速)</option>
-              <option value="30">合約負債季增 >= 30% (爆發拐點)</option>
+          <div id="exp-chips" class="hidden text-xs text-zinc-600 bg-white p-3 rounded-lg border border-zinc-200/70 leading-relaxed">
+            千張大戶連續增持且總股東人數減少，代表籌碼由散戶流向主力手中；搭配 VCP 價格波動收斂，顯示浮額清洗完畢，拉抬阻力最小。
+          </div>
+          <div class="grid grid-cols-2 gap-2.5 text-xs pt-1">
+            <div>
+              <label class="text-[11px] text-zinc-500">大戶連增週數</label>
+              <select id="rule-chips" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+                <option value="1">1 週以上</option>
+                <option value="2" selected>2 週以上</option>
+                <option value="3">3 週以上</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[11px] text-zinc-500">近 10 日振幅上限</label>
+              <select id="rule-vcp" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+                <option value="30" selected>30% 以內</option>
+                <option value="15">15% 以內</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 條件 4：合約負債 -->
+        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2.5">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-sm font-bold text-zinc-900">合約負債季增率</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-contract">季增 20% 以上</div>
+            </div>
+            <button onclick="toggleRuleExplain('exp-contract')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
+          </div>
+          <div id="exp-contract" class="hidden text-xs text-zinc-600 bg-white p-3 rounded-lg border border-zinc-200/70 leading-relaxed">
+            合約負債為客戶預付之訂金。當季增率顯著成長，代表公司在手訂單飽滿，後續一至兩季於產品交付後將直接轉化為實質營收與獲利爆發。
+          </div>
+          <div class="pt-1">
+            <select id="rule-contract" class="w-full p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+              <option value="10">季增 10% 以上</option>
+              <option value="20" selected>季增 20% 以上</option>
+              <option value="30">季增 30% 以上</option>
             </select>
           </div>
         </div>
 
-        <!-- 因子 5：市場擁擠度與散戶融資上限 -->
-        <div class="p-3.5 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-zinc-800">5. 逆向情緒：市場情緒溫差上限</span>
-            <span class="text-amber-700 font-mono font-bold" id="lbl-sent">情緒分 <= 45 分</span>
+        <!-- 條件 5：情緒溫差 -->
+        <div class="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2.5">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-sm font-bold text-zinc-900">市場情緒溫差上限</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-sent">45 分以下</div>
+            </div>
+            <button onclick="toggleRuleExplain('exp-sent')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
           </div>
-          <p class="text-[10px] text-zinc-400">排除散戶融資過熱與媒體過度吹捧之擁擠交易 (Crowded Trade)</p>
-          <div>
-            <select id="rule-sent" class="w-full mt-1 p-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-              <option value="30">極度冷門 (情緒溫差 <= 30 分)</option>
-              <option value="45" selected>早期溫和 (情緒溫差 <= 45 分)</option>
-              <option value="80">不限熱度 (含主升段動能股)</option>
+          <div id="exp-sent" class="hidden text-xs text-zinc-600 bg-white p-3 rounded-lg border border-zinc-200/70 leading-relaxed">
+            綜合散戶融資使用率與媒體報導熱度之逆向指標。分數維持低檔代表市場尚未過度擁擠，散戶尚未大量進場，具備較高安全邊際。
+          </div>
+          <div class="pt-1">
+            <select id="rule-sent" class="w-full p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
+              <option value="30">30 分以下 (極度冷門)</option>
+              <option value="45" selected>45 分以下 (早期溫和)</option>
+              <option value="80">80 分以下 (不限熱度)</option>
             </select>
           </div>
         </div>
 
-        <button onclick="applyRulesAndScan()" class="w-full py-3.5 bg-amber-500 active:bg-amber-600 text-zinc-950 font-bold text-xs rounded-xl shadow-md smooth-transition">
-          儲存量化計劃並執行篩選
+        <button onclick="applyRulesAndScan()" class="w-full py-3.5 bg-zinc-900 active:bg-zinc-800 text-amber-400 font-bold text-xs rounded-xl shadow smooth-transition">
+          儲存設定並執行篩選
         </button>
       </div>
     </div>
 
   </div>
 
-  <!-- 底部懸浮導航膠囊 -->
+  <!-- 底部純文字導航膠囊 -->
   <div class="fixed bottom-7 left-1/2 -translate-x-1/2 z-50">
-    <div class="bg-[#1A1A1E]/95 backdrop-blur-md px-6 py-2.5 rounded-full border border-zinc-700/70 shadow-2xl flex items-center justify-around gap-7 text-zinc-400">
-      <button id="nav-radar" onclick="switchTab('radar')" class="text-amber-400 flex flex-col items-center justify-center min-w-[34px] smooth-transition">
-        <i class="fa-solid fa-list-ul text-sm mb-0.5"></i>
-        <span class="text-[10px]">標的</span>
-      </button>
-      <button id="nav-foreign" onclick="switchTab('foreign')" class="hover:text-white flex flex-col items-center justify-center min-w-[34px] smooth-transition">
-        <i class="fa-solid fa-globe text-sm mb-0.5"></i>
-        <span class="text-[10px]">前沿</span>
-      </button>
-      <button id="nav-watchlist" onclick="switchTab('watchlist')" class="hover:text-white flex flex-col items-center justify-center min-w-[34px] smooth-transition">
-        <i class="fa-solid fa-star text-sm mb-0.5"></i>
-        <span class="text-[10px]">自選</span>
-      </button>
-      <button id="nav-rules" onclick="switchTab('rules')" class="hover:text-white flex flex-col items-center justify-center min-w-[34px] smooth-transition">
-        <i class="fa-solid fa-sliders text-sm mb-0.5"></i>
-        <span class="text-[10px]">計劃</span>
-      </button>
+    <div class="bg-[#1A1A1E]/95 backdrop-blur-md px-7 py-3 rounded-full border border-zinc-700/70 shadow-2xl flex items-center justify-around gap-8 text-zinc-400">
+      <button id="nav-radar" onclick="switchTab('radar')" class="text-amber-400 font-bold text-xs tracking-wider smooth-transition">標的</button>
+      <button id="nav-foreign" onclick="switchTab('foreign')" class="hover:text-white font-medium text-xs tracking-wider smooth-transition">前沿</button>
+      <button id="nav-watchlist" onclick="switchTab('watchlist')" class="hover:text-white font-medium text-xs tracking-wider smooth-transition">自選</button>
+      <button id="nav-rules" onclick="switchTab('rules')" class="hover:text-white font-medium text-xs tracking-wider smooth-transition">計劃</button>
     </div>
   </div>
 
   <script>
-    // 內建最新基準備援池（若 data.json 尚未重新跑完新欄位時自動補齊華爾街量化欄位）
     const FALLBACK_WS_META = {
       "4903": {
         rvol20: 2.36, rvol60: 2.80, todayVol: 10640, ma20Vol: 4500, ma60Vol: 3800,
-        ma20Price: 43.5, ma60Price: 41.2, maTrend: "多頭排列 (站上20/60MA)", stagePass: true,
+        ma20Price: 43.5, ma60Price: 41.2, maTrend: "站上20/60MA", stagePass: true,
         rsRating: 89, vcpRange: 11.4, distFromHigh: "-2.1%",
         chipsCurr: "48.6%", chipsPrev: "44.4%", chipsDiff: "+4.2%", chipsStreak: 4, holdersChg: "-6.2%",
         contractCurr: "3.85億", contractPrev: "2.60億", contractQoQ: 48.2, contractYoY: 115.0,
         marginLots: 4120, marginChg20d: -890, marginUtil: 14.2, mediaCount: 2,
         intel: {
           title: "Broadcom & Cloud Titans Accelerate Co-Packaged Optics (CPO) Deployment",
-          zh_title: "彭博深度：北美雲端巨頭加速下一代 AI 機架導入 CPO 光互連架構，亞洲供應鏈獲外溢訂單",
-          source: "Bloomberg Technology", date: "2026-10-29",
+          zh_title: "北美雲端巨頭加速下一代 AI 機架導入 CPO 光互連架構，亞洲供應鏈獲外溢訂單",
+          source: "Bloomberg", date: "2026-10-29",
           url: "https://www.google.com/search?q=Bloomberg+Co-Packaged+Optics+CPO+%E8%81%AF%E5%85%89%E9%80%9A+4903&tbm=nws",
-          summary: "美系 CSP 大廠次世代機架確定擴大導入 CPO 規格以解決銅線傳輸瓶頸，台系二線光纖與精密連接耗材廠開始承接產能外溢試產單。"
+          summary: "美系雲端大廠次世代機架確定擴大導入 CPO 規格以解決傳輸瓶頸，台系二線光纖與精密連接耗材廠開始承接外溢試產單。"
         }
       },
       "4772": {
         rvol20: 1.89, rvol60: 2.20, todayVol: 3410, ma20Vol: 1800, ma60Vol: 1550,
-        ma20Price: 162.0, ma60Price: 156.5, maTrend: "多頭排列 (站上20/60MA)", stagePass: true,
+        ma20Price: 162.0, ma60Price: 156.5, maTrend: "站上20/60MA", stagePass: true,
         rsRating: 86, vcpRange: 9.8, distFromHigh: "-1.5%",
         chipsCurr: "91.2%", chipsPrev: "88.4%", chipsDiff: "+2.8%", chipsStreak: 3, holdersChg: "-4.1%",
         contractCurr: "2.42億", contractPrev: "1.82億", contractQoQ: 32.5, contractYoY: 82.0,
         marginLots: 1250, marginChg20d: -420, marginUtil: 6.8, mediaCount: 1,
         intel: {
           title: "TSMC 2nm & A16 Scaling Drives Exponential Demand for Specialty Gases",
-          zh_title: "日經亞洲：台積電 2 奈米與埃米製程量產在即，特種氣體矽乙烷消耗量倍增",
+          zh_title: "台積電 2 奈米與埃米製程量產在即，特種氣體矽乙烷消耗量倍增",
           source: "Nikkei Asia", date: "2026-11-02",
           url: "https://www.google.com/search?q=Nikkei+TSMC+2nm+specialty+gas+%E5%8F%B0%E7%89%B9%E5%8C%96+%E7%9F%BD%E4%B9%99%E7%83%B7+4772&tbm=nws",
-          summary: "隨先進埃米製程產能爬坡，關鍵特用氣體消耗速度翻倍，具備在地化高純度合成能力之合格認證供應商享有長約護城河。"
+          summary: "隨先進埃米製程產能爬坡，關鍵特用氣體消耗速度翻倍，具備在地化高純度合成能力之合格供應商享有長約護城河。"
         }
       },
       "8114": {
@@ -311,40 +325,40 @@
         marginLots: 1890, marginChg20d: -310, marginUtil: 9.5, mediaCount: 1,
         intel: {
           title: "AI Chipmakers Ramp Up System-Level Test (SLT) & Edge AI Infrastructure",
-          zh_title: "路透社：全球 AI 晶片大廠擴大系統級測試（SLT）規模，測試治具機台訂單排至明年下半年",
-          source: "Reuters Tech", date: "2026-10-27",
+          zh_title: "全球 AI 晶片大廠擴大系統級測試規模，測試治具機台訂單排至明年下半年",
+          source: "Reuters", date: "2026-10-27",
           url: "https://www.google.com/search?q=Reuters+AI+Chip+Testing+Edge+AI+%E6%8C%AF%E6%A8%BA%E9%9B%BB+8114&tbm=nws",
-          summary: "次世代 AI 運算晶片功耗與複雜度倍增，原廠大幅提高後端 SLT 測試治具採購比重，獨家供應鏈能見度高。"
+          summary: "次世代運算晶片功耗與複雜度倍增，原廠大幅提高後端測試治具採購比重，獨家供應鏈訂單能見度高。"
         }
       },
       "6530": {
         rvol20: 2.72, rvol60: 3.40, todayVol: 9520, ma20Vol: 3500, ma60Vol: 2800,
-        ma20Price: 58.5, ma60Price: 56.2, maTrend: "多頭排列 (站上20/60MA)", stagePass: true,
+        ma20Price: 58.5, ma60Price: 56.2, maTrend: "站上20/60MA", stagePass: true,
         rsRating: 91, vcpRange: 13.2, distFromHigh: "-0.8%",
         chipsCurr: "52.3%", chipsPrev: "48.7%", chipsDiff: "+3.6%", chipsStreak: 3, holdersChg: "-5.4%",
         contractCurr: "1.15億", contractPrev: "0.94億", contractQoQ: 21.5, contractYoY: 49.0,
         marginLots: 2310, marginChg20d: -180, marginUtil: 11.4, mediaCount: 3,
         intel: {
           title: "North American Industrial Automation Shifts Optical Transceiver Orders",
-          zh_title: "經濟日報專題：歐美工控與資料中心去紅化，台系工規光收發模組廠迎轉單潮",
-          source: "經濟日報 產業焦點", date: "2026-10-31",
+          zh_title: "歐美工控與資料中心供應鏈重組，台系工規光收發模組廠迎轉單",
+          source: "經濟日報", date: "2026-10-31",
           url: "https://www.google.com/search?q=%E7%B6%93%E6%BF%9F%E6%97%A5%E5%A0%B1+%E5%85%89%E6%94%B6%E7%99%BC%E6%A8%A1%E7%B5%84+%E5%89%B5%E5%A8%81+6530&tbm=nws",
-          summary: "北美工控與雲端設備商加速替換非紅供應鏈，高毛利工規熱插拔光模組訂單持續轉向台廠。"
+          summary: "北美工控與雲端設備商加速替換供應鏈，高毛利工規光模組訂單持續轉向台廠。"
         }
       },
       "3450": {
         rvol20: 1.90, rvol60: 2.40, todayVol: 22800, ma20Vol: 12000, ma60Vol: 9500,
-        ma20Price: 221.0, ma60Price: 210.5, maTrend: "多頭排列 (站上20/60MA)", stagePass: true,
+        ma20Price: 221.0, ma60Price: 210.5, maTrend: "站上20/60MA", stagePass: true,
         rsRating: 94, vcpRange: 14.1, distFromHigh: "-1.2%",
         chipsCurr: "58.9%", chipsPrev: "53.8%", chipsDiff: "+5.1%", chipsStreak: 4, holdersChg: "-7.5%",
         contractCurr: "6.40億", contractPrev: "4.63億", contractQoQ: 38.0, contractYoY: 95.0,
         marginLots: 8450, marginChg20d: 320, marginUtil: 22.1, mediaCount: 5,
         intel: {
           title: "800G & 1.6T Optical Transceiver Laser Packaging Capacity Hits Bottleneck",
-          zh_title: "工商時報專文：AI 算力中心推進 800G/1.6T 光模組，上游 EML 雷射封裝產能全面吃緊",
-          source: "工商時報 科技脈動", date: "2026-11-03",
+          zh_title: "AI 算力中心推進 800G 光模組，上游雷射封裝產能吃緊",
+          source: "工商時報", date: "2026-11-03",
           url: "https://www.google.com/search?q=%E5%B7%A5%E5%95%86%E6%99%82%E5%A0%B1+%E7%9F%BD%E5%85%89%E5%AD%90+%E9%9B%B7%E5%B0%84%E5%B0%81%E8%A3%9D+%E8%81%AF%E9%88%9E+3450&tbm=nws",
-          summary: "國際雲端巨頭追單高階光收發模組，具備 COS 與雷射封裝量產能力之指標廠產能稼動率滿載。"
+          summary: "國際雲端巨頭追單高階光收發模組，具備雷射封裝量產能力之指標廠產能滿載。"
         }
       }
     };
@@ -355,7 +369,6 @@
     let isViewingWatchlist = false;
     let currentOpenScoreSide = null;
 
-    // 華爾街 5 維度個人化策略配置
     const DEFAULT_STRATEGY = {
       maDays: 60,
       volMultiplier: 1.5,
@@ -369,9 +382,14 @@
 
     let userStrategy = { ...DEFAULT_STRATEGY };
 
+    function toggleRuleExplain(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
     function loadStrategy() {
       try {
-        const saved = JSON.parse(localStorage.getItem('tw_radar_ws_strategy_v1'));
+        const saved = JSON.parse(localStorage.getItem('tw_radar_ws_strategy_v2'));
         if (saved) userStrategy = { ...DEFAULT_STRATEGY, ...saved };
       } catch (e) {}
       syncStrategyUI();
@@ -391,7 +409,7 @@
 
     function resetDefaultStrategy() {
       userStrategy = { ...DEFAULT_STRATEGY };
-      localStorage.setItem('tw_radar_ws_strategy_v1', JSON.stringify(userStrategy));
+      localStorage.setItem('tw_radar_ws_strategy_v2', JSON.stringify(userStrategy));
       syncStrategyUI();
     }
 
@@ -406,22 +424,21 @@
       userStrategy.maxSentScore = parseInt(document.getElementById('rule-sent').value);
 
       document.getElementById('lbl-rvol').innerText = userStrategy.volMultiplier === 0 
-        ? `${userStrategy.maDays}MA 不限倍數` 
-        : `${userStrategy.maDays}MA >= ${userStrategy.volMultiplier.toFixed(1)} 倍`;
-      document.getElementById('lbl-rs').innerText = `RS >= ${userStrategy.minRsRating} · ${userStrategy.trendStage === 'stage2' ? '站上季線' : '不限位階'}`;
-      document.getElementById('lbl-chips').innerText = `連增 >= ${userStrategy.minChipsStreak} 週 · VCP <= ${userStrategy.maxVcpRange}%`;
-      document.getElementById('lbl-contract').innerText = `季增 QoQ >= ${userStrategy.minContractQoQ}%`;
-      document.getElementById('lbl-sent').innerText = `情緒溫差 <= ${userStrategy.maxSentScore} 分`;
+        ? `${userStrategy.maDays}日均量 · 不限倍數` 
+        : `${userStrategy.maDays}日均量 ${userStrategy.volMultiplier.toFixed(1)} 倍以上`;
+      document.getElementById('lbl-rs').innerText = `RS ${userStrategy.minRsRating} 以上 · ${userStrategy.trendStage === 'stage2' ? '站上季線' : '不限位階'}`;
+      document.getElementById('lbl-chips').innerText = `大戶連增 ${userStrategy.minChipsStreak} 週 · 振幅 ${userStrategy.maxVcpRange}% 內`;
+      document.getElementById('lbl-contract').innerText = `季增 ${userStrategy.minContractQoQ}% 以上`;
+      document.getElementById('lbl-sent').innerText = `${userStrategy.maxSentScore} 分以下`;
     }
 
     function applyRulesAndScan() {
       updateRulePreview();
-      localStorage.setItem('tw_radar_ws_strategy_v1', JSON.stringify(userStrategy));
+      localStorage.setItem('tw_radar_ws_strategy_v2', JSON.stringify(userStrategy));
       switchTab('radar');
       executeScan();
     }
 
-    // 補齊並標準化每檔股票的華爾街量化資料
     function normalizeStockData(stock) {
       const fb = FALLBACK_WS_META[stock.code] || {};
       const ws = stock.wallStreet || {};
@@ -435,7 +452,7 @@
         ma60Vol: ws.ma60Vol || fb.ma60Vol || 1800,
         ma20Price: ws.ma20Price || fb.ma20Price || +(stock.price * 0.96).toFixed(2),
         ma60Price: ws.ma60Price || fb.ma60Price || +(stock.price * 0.92).toFixed(2),
-        maTrend: ws.maTrend || fb.maTrend || "多頭排列 (站上20/60MA)",
+        maTrend: ws.maTrend || fb.maTrend || "站上20/60MA",
         stagePass: ws.stagePass !== undefined ? ws.stagePass : true,
         rsRating: ws.rsRating || fb.rsRating || 82,
         vcpRange: ws.vcpRange || fb.vcpRange || 11.5,
@@ -461,7 +478,6 @@
       return stock;
     }
 
-    // 頂部雙軌分數點擊展開明細功能
     function toggleTopScoreDetail(side) {
       const drawer = document.getElementById('top-score-drawer');
       if (!drawer.classList.contains('hidden') && currentOpenScoreSide === side) {
@@ -493,47 +509,44 @@
         const stopLossPrice = (cost * 0.935).toFixed(2);
 
         if (currentOpenScoreSide === 'left') {
-          titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 累積損益拆解`;
+          titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 損益明細`;
           bodyEl.innerHTML = `
-            <div class="flex justify-between"><span>當前最新收盤價：</span><b class="text-white">$${focusedStock.price.toFixed(2)}</b></div>
-            <div class="flex justify-between"><span>計算基準成本價：</span><b class="text-amber-300">$${cost.toFixed(2)} (${watchInfo.customCost ? '自訂買入價' : '加入日收盤'})</b></div>
-            <div class="flex justify-between"><span>每股價差損益：</span><b class="${diff >= 0 ? 'text-red-400' : 'text-emerald-400'}">${diff >= 0 ? '+' : ''}$${diff} (${gainPct}%)</b></div>
-            <div class="flex justify-between"><span>每張(1000股)帳面損益：</span><b class="${diff >= 0 ? 'text-red-400' : 'text-emerald-400'}">${diff >= 0 ? '+' : ''}${Math.round(diff * 1000).toLocaleString()} TWD</b></div>
+            <div class="flex justify-between"><span>最新收盤：</span><b class="text-white">$${focusedStock.price.toFixed(2)}</b></div>
+            <div class="flex justify-between"><span>計算成本：</span><b class="text-amber-300">$${cost.toFixed(2)}</b></div>
+            <div class="flex justify-between"><span>每股價差：</span><b class="${diff >= 0 ? 'text-red-400' : 'text-emerald-400'}">${diff >= 0 ? '+' : ''}$${diff} (${gainPct}%)</b></div>
+            <div class="flex justify-between"><span>每張損益：</span><b class="${diff >= 0 ? 'text-red-400' : 'text-emerald-400'}">${diff >= 0 ? '+' : ''}${Math.round(diff * 1000).toLocaleString()} TWD</b></div>
           `;
         } else {
-          titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 部位風控與防守線`;
+          titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 風控防線`;
           bodyEl.innerHTML = `
-            <div class="flex justify-between"><span>自選加入日期：</span><b class="text-white">${watchInfo.addDate}</b></div>
-            <div class="flex justify-between"><span>華爾街 -6.5% 硬性停損價：</span><b class="text-emerald-400">$${stopLossPrice}</b></div>
-            <div class="flex justify-between"><span>20MA 月線動態防守價：</span><b class="text-amber-300">$${ws.ma20Price}</b></div>
-            <div class="flex justify-between"><span>60MA 季線生命線：</span><b class="text-zinc-300">$${ws.ma60Price}</b></div>
+            <div class="flex justify-between"><span>加入日期：</span><b class="text-white">${watchInfo.addDate}</b></div>
+            <div class="flex justify-between"><span>-6.5% 停損點：</span><b class="text-emerald-400">$${stopLossPrice}</b></div>
+            <div class="flex justify-between"><span>20MA 支撐：</span><b class="text-amber-300">$${ws.ma20Price}</b></div>
+            <div class="flex justify-between"><span>60MA 季線：</span><b class="text-zinc-300">$${ws.ma60Price}</b></div>
           `;
         }
         return;
       }
 
       if (currentOpenScoreSide === 'left') {
-        titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 供需異動分：${focusedStock.fundScore} / 100`;
+        titleEl.innerText = `${focusedStock.name} 供需分數明細 (${focusedStock.fundScore}分)`;
         bodyEl.innerHTML = `
-          <div class="flex justify-between"><span>• RVOL 相對量能 (60MA)：</span><b class="text-amber-300">${ws.rvol60} 倍 (今日 ${ws.todayVol}張 vs 季均 ${ws.ma60Vol}張)</b></div>
-          <div class="flex justify-between"><span>• O'Neil RS 相對大盤強度：</span><b class="text-white">RS ${ws.rsRating} / 99 (${ws.maTrend})</b></div>
-          <div class="flex justify-between"><span>• 千張大戶聰明錢動向：</span><b class="text-amber-300">連增 ${ws.chipsStreak} 週 (${ws.chipsPrev} ➔ ${ws.chipsCurr})</b></div>
-          <div class="flex justify-between"><span>• 合約負債 (RPO 在手訂單)：</span><b class="text-white">${ws.contractCurr} (季增 +${ws.contractQoQ}% / 年增 +${ws.contractYoY}%)</b></div>
-          <div class="text-[10px] text-zinc-400 pt-1 border-t border-zinc-800">評分準則：綜合機構點火量能、大戶鎖碼與訂單領先指標，>80 分代表機構暗中吸籌完畢。</div>
+          <div class="flex justify-between"><span>相對量能 (60MA)：</span><b class="text-amber-300">${ws.rvol60} 倍 (今日 ${ws.todayVol}張 / 季均 ${ws.ma60Vol}張)</b></div>
+          <div class="flex justify-between"><span>RS 相對強度：</span><b class="text-white">${ws.rsRating} / 99 (${ws.maTrend})</b></div>
+          <div class="flex justify-between"><span>千張大戶動向：</span><b class="text-amber-300">連增 ${ws.chipsStreak} 週 (${ws.chipsPrev} 至 ${ws.chipsCurr})</b></div>
+          <div class="flex justify-between"><span>合約負債規模：</span><b class="text-white">${ws.contractCurr} (季增 +${ws.contractQoQ}%)</b></div>
         `;
       } else {
-        titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 市場情緒溫差：${focusedStock.sentScore} / 100`;
+        titleEl.innerText = `${focusedStock.name} 情緒溫差明細 (${focusedStock.sentScore}分)`;
         bodyEl.innerHTML = `
-          <div class="flex justify-between"><span>• 散戶融資使用率：</span><b class="text-emerald-400">${ws.marginUtil}% (餘額 ${ws.marginLots} 張)</b></div>
-          <div class="flex justify-between"><span>• 近 20 日融資增減：</span><b class="text-white">${ws.marginChg20d > 0 ? '+' + ws.marginChg20d : ws.marginChg20d} 張 (${ws.marginChg20d <= 0 ? '散戶持續退場' : '散戶溫和進場'})</b></div>
-          <div class="flex justify-between"><span>• 總股東人數月變化：</span><b class="text-emerald-400">${ws.holdersChg} (籌碼集中度提高)</b></div>
-          <div class="flex justify-between"><span>• 近 30 日主流媒體曝光：</span><b class="text-white">${ws.mediaCount} 篇 (處於機構資訊差早中期)</b></div>
-          <div class="text-[10px] text-zinc-400 pt-1 border-t border-zinc-800">評分準則：華爾街逆向擁擠度指標（越低代表散戶越少、籌碼越乾淨），<35 分具備極佳非對稱賠率。</div>
+          <div class="flex justify-between"><span>融資使用率：</span><b class="text-emerald-400">${ws.marginUtil}% (餘額 ${ws.marginLots} 張)</b></div>
+          <div class="flex justify-between"><span>近 20 日融資變化：</span><b class="text-white">${ws.marginChg20d > 0 ? '+' + ws.marginChg20d : ws.marginChg20d} 張</b></div>
+          <div class="flex justify-between"><span>總股東人數變化：</span><b class="text-emerald-400">${ws.holdersChg}</b></div>
+          <div class="flex justify-between"><span>近月主流報導：</span><b class="text-white">${ws.mediaCount} 篇</b></div>
         `;
       }
     }
 
-    // 本地自選清單管理
     function getWatchlistData() {
       try {
         return JSON.parse(localStorage.getItem('tw_radar_watch_v6') || '{}');
@@ -580,14 +593,13 @@
     }
 
     function clearWatchlist() {
-      if (confirm('確定清空自選追蹤清單？')) {
+      if (confirm('確定清空自選清單？')) {
         saveWatchlistData({});
         renderList(currentList);
         renderWatchlist();
       }
     }
 
-    // 點擊標的連動頂部主看板
     function setFocusStock(stock, fromWatchlist = false) {
       if (!stock) return;
       focusedStock = stock;
@@ -606,11 +618,11 @@
       statusEl.innerText = stock.status;
 
       if (stock.isUp) {
-        priceEl.className = "text-5xl font-black tracking-tight text-red-500";
+        priceEl.className = "text-5xl font-black tracking-tight font-mono text-red-500";
         changeEl.className = "text-sm font-bold font-mono text-red-500";
         statusEl.className = "ml-auto text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-red-500/10 text-red-400 border border-red-500/30";
       } else {
-        priceEl.className = "text-5xl font-black tracking-tight text-emerald-500";
+        priceEl.className = "text-5xl font-black tracking-tight font-mono text-emerald-500";
         changeEl.className = "text-sm font-bold font-mono text-emerald-500";
         statusEl.className = "ml-auto text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
       }
@@ -633,19 +645,19 @@
         const isGain = stock.price >= cost;
         val1.innerText = (isGain ? '+' : '') + gainPercent + '%';
         val1.className = isGain ? "text-xl font-black text-red-400 font-mono" : "text-xl font-black text-emerald-400 font-mono";
-        sub1.innerText = watchInfo.customCost !== null ? "自訂成本計" : "基準收盤計";
+        sub1.innerText = watchInfo.customCost !== null ? "自訂成本" : "基準收盤";
 
         lbl2.innerText = "持有成本";
         val2.innerText = '$' + cost.toFixed(2);
         val2.className = "text-xl font-black text-amber-300 font-mono";
         sub2.innerText = "TWD";
       } else {
-        lbl1.innerText = "供需異動分";
+        lbl1.innerText = "供需分數";
         val1.innerText = stock.fundScore || 85;
         val1.className = "text-xl font-black text-amber-300 font-mono";
         sub1.innerText = "/ 100";
 
-        lbl2.innerText = "市場情緒溫差";
+        lbl2.innerText = "情緒溫差";
         val2.innerText = stock.sentScore || 25;
         val2.className = "text-xl font-black text-emerald-400 font-mono";
         sub2.innerText = "/ 100";
@@ -656,9 +668,8 @@
       if (fromWatchlist) renderWatchlist();
     }
 
-    // 繪製原生互動式近月 K 線圖
     function renderInteractiveKline(containerId, klineData) {
-      if (!klineData || klineData.length === 0) return '<div class="text-xs text-zinc-400 p-3">暫無真實 K 線數據</div>';
+      if (!klineData || klineData.length === 0) return '<div class="text-xs text-zinc-400 p-3">暫無 K 線資料</div>';
       
       const w = 330;
       const hKline = 130;
@@ -697,13 +708,13 @@
 
       return `
         <div class="relative w-full" id="wrapper_${containerId}">
-          <div id="tip_${containerId}" class="flex flex-wrap justify-between items-center text-[10px] font-mono bg-zinc-100 px-2 py-1 rounded-lg text-zinc-600 mb-2">
-            <span>日期: <b id="t_date_${containerId}" class="text-zinc-800">${klineData[count-1].date}</b></span>
-            <span>開: <b id="t_open_${containerId}" class="text-zinc-800">${klineData[count-1].open}</b></span>
-            <span>高: <b id="t_high_${containerId}" class="text-zinc-800">${klineData[count-1].high}</b></span>
-            <span>低: <b id="t_low_${containerId}" class="text-zinc-800">${klineData[count-1].low}</b></span>
-            <span>收: <b id="t_close_${containerId}" class="${klineData[count-1].isUp ? 'text-red-500' : 'text-emerald-500'} font-bold">${klineData[count-1].close}</b></span>
-            <span>量: <b id="t_vol_${containerId}" class="text-zinc-800">${klineData[count-1].vol}張</b></span>
+          <div id="tip_${containerId}" class="flex flex-wrap justify-between items-center text-[10px] font-mono bg-zinc-100 px-2.5 py-1.5 rounded-lg text-zinc-600 mb-2">
+            <span>日期 <b id="t_date_${containerId}" class="text-zinc-900">${klineData[count-1].date}</b></span>
+            <span>開 <b id="t_open_${containerId}" class="text-zinc-900">${klineData[count-1].open}</b></span>
+            <span>高 <b id="t_high_${containerId}" class="text-zinc-900">${klineData[count-1].high}</b></span>
+            <span>低 <b id="t_low_${containerId}" class="text-zinc-900">${klineData[count-1].low}</b></span>
+            <span>收 <b id="t_close_${containerId}" class="${klineData[count-1].isUp ? 'text-red-500' : 'text-emerald-500'} font-bold">${klineData[count-1].close}</b></span>
+            <span>量 <b id="t_vol_${containerId}" class="text-zinc-900">${klineData[count-1].vol}張</b></span>
           </div>
 
           <svg id="svg_${containerId}" viewBox="0 0 ${w} ${totalH}" class="w-full h-44 cursor-crosshair overflow-visible touch-none">
@@ -758,23 +769,22 @@
       svg.addEventListener('touchend', () => vLine.classList.add('hidden'));
     }
 
-    function toggleDrawer(id, iconId, klineInitCallback) {
+    function toggleDrawer(id, iconId, openText, closeText, klineInitCallback) {
       const el = document.getElementById(id);
       const icon = document.getElementById(iconId);
       if (!el) return;
       if (el.style.maxHeight && el.style.maxHeight !== '0px') {
         el.style.maxHeight = '0px';
         el.style.opacity = '0';
-        if (icon) icon.innerHTML = '展開近月日K <i class="fa-solid fa-chevron-down ml-1"></i>';
+        if (icon) icon.innerText = openText;
       } else {
-        el.style.maxHeight = '950px';
+        el.style.maxHeight = '1400px';
         el.style.opacity = '1';
-        if (icon) icon.innerHTML = '收起 <i class="fa-solid fa-chevron-up ml-1"></i>';
+        if (icon) icon.innerText = closeText;
         if (klineInitCallback) setTimeout(klineInitCallback, 50);
       }
     }
 
-    // 渲染標的列表
     function renderList(stocks) {
       const container = document.getElementById('cards-container');
       const watchData = getWatchlistData();
@@ -786,15 +796,19 @@
         const ws = stock.ws;
         const isWatched = !!watchData[stock.code];
         const isSelected = focusedStock && focusedStock.code === stock.code && !isViewingWatchlist;
-        const starClass = isWatched ? 'fa-solid fa-star text-amber-500' : 'fa-regular fa-star text-zinc-300 hover:text-amber-500';
+        const watchBtnStyle = isWatched 
+          ? 'bg-amber-500 text-zinc-950 font-bold border-amber-500' 
+          : 'bg-zinc-100 text-zinc-500 border-zinc-200';
+        const watchBtnText = isWatched ? '已自選' : '加入自選';
+
         const priceColor = stock.isUp ? 'text-red-500' : 'text-emerald-500';
         const selectedBorder = isSelected ? 'border-amber-500 shadow-md ring-1 ring-amber-500/30' : 'border-zinc-200/70';
 
         const dynamicTags = [
-          `RS強度 ${ws.rsRating}`,
+          `RS ${ws.rsRating}`,
           `RVOL ${userStrategy.maDays === 60 ? ws.rvol60 : ws.rvol20}x`,
-          `大戶連+${ws.chipsStreak}週`,
-          `合約+${ws.contractQoQ}%`
+          `大戶連增 ${ws.chipsStreak} 週`,
+          `合約季增 ${ws.contractQoQ}%`
         ];
         const tagsHtml = dynamicTags.map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-zinc-100 text-zinc-700 font-mono font-medium">${t}</span>`).join('');
         const chartContainerId = `kline_${stock.code}`;
@@ -806,15 +820,15 @@
                 <div class="flex items-center gap-2">
                   <span class="text-lg font-bold text-zinc-900">${stock.name}</span>
                   <span class="text-xs font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded">${stock.code}</span>
-                  <button onclick="event.stopPropagation(); toggleWatchlist('${stock.code}')" class="p-1">
-                    <i class="${starClass} text-xs"></i>
+                  <button onclick="event.stopPropagation(); toggleWatchlist('${stock.code}')" class="text-[10px] px-2 py-0.5 rounded border ${watchBtnStyle} smooth-transition">
+                    ${watchBtnText}
                   </button>
                 </div>
                 <p class="text-xs text-zinc-500 mt-1">${stock.desc}</p>
               </div>
 
               <div class="text-right">
-                <div class="text-base font-black ${priceColor}">$${stock.price.toFixed(2)}</div>
+                <div class="text-base font-black font-mono ${priceColor}">$${stock.price.toFixed(2)}</div>
                 <div class="text-xs font-bold font-mono ${priceColor}">${stock.change}</div>
               </div>
             </div>
@@ -823,19 +837,19 @@
               ${tagsHtml}
             </div>
 
-            <div onclick="event.stopPropagation(); toggleDrawer('drawer_${stock.code}', 'icon_${stock.code}', () => initKlineCrosshair('${chartContainerId}', rawStocksData.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-[11px] text-zinc-400">
-              <span class="text-zinc-500"><i class="fa-solid fa-chart-column mr-1"></i>近月日K與華爾街因子拆解</span>
-              <span id="icon_${stock.code}">展開近月日K <i class="fa-solid fa-chevron-down ml-1"></i></span>
+            <div onclick="event.stopPropagation(); toggleDrawer('drawer_${stock.code}', 'icon_${stock.code}', '展開', '收起', () => initKlineCrosshair('${chartContainerId}', rawStocksData.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-xs text-zinc-500">
+              <span>近月日 K 線與篩選依據</span>
+              <span id="icon_${stock.code}" class="font-medium text-zinc-700">展開</span>
             </div>
 
             <div id="drawer_${stock.code}" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-700 space-y-2.5 pt-0">
               <div class="mt-2.5 bg-zinc-50 rounded-xl p-3 border border-zinc-100">
                 ${renderInteractiveKline(chartContainerId, stock.kline)}
               </div>
-              <div class="bg-zinc-50 rounded-xl p-3 border border-zinc-100 space-y-1.5 text-[11px]">
-                <div><b>📊 RVOL 量價結構：</b>今日成交 ${ws.todayVol.toLocaleString()} 張（對比 20MA 均量 ${ws.ma20Vol.toLocaleString()} 張 / 60MA 季均量 ${ws.ma60Vol.toLocaleString()} 張），近10日 VCP 波動收斂 ${ws.vcpRange}%。</div>
-                <div><b>🏦 聰明錢籌碼：</b>千張大戶由 4 週前 ${ws.chipsPrev} 升至 ${ws.chipsCurr}（連增 ${ws.chipsStreak} 週），股東人數 ${ws.holdersChg}。</div>
-                <div><b>📑 合約負債 (RPO)：</b>本季達 ${ws.contractCurr}（上季 ${ws.contractPrev}），季增 +${ws.contractQoQ}% / 年增 +${ws.contractYoY}%。</div>
+              <div class="bg-zinc-50 rounded-xl p-3.5 border border-zinc-100 space-y-2 text-[11px] leading-relaxed">
+                <div><b class="text-zinc-900">量價結構：</b>今日成交 ${ws.todayVol.toLocaleString()} 張，對比 20 日均量 ${ws.ma20Vol.toLocaleString()} 張、60 日均量 ${ws.ma60Vol.toLocaleString()} 張，近 10 日振幅收斂於 ${ws.vcpRange}%。</div>
+                <div><b class="text-zinc-900">籌碼動向：</b>千張大戶佔比由 4 週前 ${ws.chipsPrev} 升至 ${ws.chipsCurr}（連增 ${ws.chipsStreak} 週），股東人數 ${ws.holdersChg}。</div>
+                <div><b class="text-zinc-900">合約負債：</b>本季達 ${ws.contractCurr}（上季 ${ws.contractPrev}），季增 +${ws.contractQoQ}%，年增 +${ws.contractYoY}%。</div>
               </div>
             </div>
           </div>
@@ -844,7 +858,6 @@
       });
     }
 
-    // 渲染前沿情報（直達專文搜尋與原文索引）
     function renderForeign(stocks) {
       const container = document.getElementById('foreign-container');
       container.innerHTML = '';
@@ -863,10 +876,10 @@
             <div class="text-xs font-bold text-zinc-900 leading-snug">${displayTitle}</div>
             ${subOriginal}
             <p class="text-xs text-zinc-600 leading-relaxed">${intel.summary}</p>
-            <div class="pt-2.5 border-t border-zinc-100 flex justify-between items-center text-[11px]">
-              <span class="text-zinc-500">映射標的：<b class="text-zinc-900">${s.name} (${s.code})</b></span>
-              <a href="${intel.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-zinc-900 text-amber-400 rounded-lg font-medium hover:bg-zinc-800 flex items-center gap-1.5 text-[11px]">
-                閱讀專文索引 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            <div class="pt-2.5 border-t border-zinc-100 flex justify-between items-center text-xs">
+              <span class="text-zinc-500">關聯標的：<b class="text-zinc-900">${s.name} (${s.code})</b></span>
+              <a href="${intel.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-zinc-900 text-amber-400 rounded-lg font-medium hover:bg-zinc-800 text-[11px]">
+                閱讀專文
               </a>
             </div>
           </div>
@@ -874,7 +887,7 @@
       });
     }
 
-    // 渲染自選清單（完整展示當前 vs 歷史基準之細部數據 + 原地展開日K）
+    // 渲染自選清單：詳細資訊與 K 線圖一併摺疊，展開後附帶指標意義說明
     function renderWatchlist() {
       const container = document.getElementById('watchlist-container');
       const watchData = getWatchlistData();
@@ -884,9 +897,8 @@
       if (codes.length === 0) {
         container.innerHTML = `
           <div class="text-center py-20 text-zinc-400 text-xs">
-            <i class="fa-regular fa-star text-3xl mb-3 text-zinc-300"></i>
-            <p>尚無自選追蹤標的</p>
-            <p class="text-[10px] text-zinc-400 mt-1">點擊標的名稱旁星號即可加入深度追蹤</p>
+            <p>尚無自選標的</p>
+            <p class="text-[11px] text-zinc-400 mt-1">於標的列表點擊「加入自選」即可納入追蹤</p>
           </div>
         `;
         return;
@@ -903,23 +915,23 @@
         const watchChartId = `watch_kline_${stock.code}`;
 
         const card = `
-          <div onclick="setFocusStock(rawStocksData.find(s=>s.code==='${stock.code}'), true)" class="bg-white rounded-2xl p-4 border ${selectedBorder} cursor-pointer smooth-transition active:scale-[0.99] space-y-3">
+          <div onclick="setFocusStock(rawStocksData.find(s=>s.code==='${stock.code}'), true)" class="bg-white rounded-2xl p-4 border ${selectedBorder} cursor-pointer smooth-transition active:scale-[0.99]">
             
-            <!-- 標題與成本設定 -->
+            <!-- 頭部與成本設定（預設顯示） -->
             <div class="flex justify-between items-start">
               <div>
                 <div class="flex items-center gap-2">
                   <span class="text-lg font-bold text-zinc-900">${stock.name}</span>
                   <span class="text-xs font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded">${stock.code}</span>
-                  <button onclick="event.stopPropagation(); toggleWatchlist('${stock.code}')" class="text-amber-500 text-xs">
-                    <i class="fa-solid fa-star"></i>
+                  <button onclick="event.stopPropagation(); toggleWatchlist('${stock.code}')" class="text-[10px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-500 hover:text-red-600">
+                    移除
                   </button>
                 </div>
-                <div class="text-[10px] text-zinc-400 mt-0.5 font-mono">追蹤起算：${info.addDate} (基準收盤 $${info.basePrice.toFixed(2)})</div>
+                <div class="text-[11px] text-zinc-400 mt-1 font-mono">加入日 ${info.addDate} · 基準價 $${info.basePrice.toFixed(2)}</div>
               </div>
 
               <div class="text-right" onclick="event.stopPropagation()">
-                <div class="text-[10px] text-zinc-400 mb-0.5">自訂買入成本</div>
+                <div class="text-[10px] text-zinc-400 mb-0.5">買入成本</div>
                 <div class="flex items-center justify-end gap-1">
                   <span class="text-zinc-400 text-xs font-mono">$</span>
                   <input 
@@ -934,61 +946,82 @@
               </div>
             </div>
 
-            <!-- 華爾街四大深度對比矩陣（當前數值 vs 過往平均/前期基準） -->
-            <div class="grid grid-cols-1 gap-2 pt-2 border-t border-zinc-100 text-[11px]">
+            <!-- 摺疊觸發列 -->
+            <div onclick="event.stopPropagation(); toggleDrawer('watch_drawer_${stock.code}', 'watch_icon_${stock.code}', '展開走勢與數據', '收起', () => initKlineCrosshair('${watchChartId}', rawStocksData.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-xs text-zinc-500">
+              <span>近月日 K 線與深度指標判讀</span>
+              <span id="watch_icon_${stock.code}" class="font-medium text-zinc-700">展開走勢與數據</span>
+            </div>
+
+            <!-- 摺疊內容：K線圖 + 數據對比 + 指標正向意義說明 -->
+            <div id="watch_drawer_${stock.code}" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-700 pt-0 space-y-3">
               
-              <!-- 1. 交易量與過往均量明確對比 -->
-              <div class="bg-zinc-50 p-2.5 rounded-xl border border-zinc-100">
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-zinc-500 font-bold text-[10px]">📊 交易量能對比 (RVOL ${ws.rvol60}倍)</span>
-                  <span class="text-[10px] font-mono font-bold ${ws.rvol20 >= 1.5 ? 'text-red-600' : 'text-zinc-600'}">較月均量 ${ws.rvol20 >= 1 ? '+' + Math.round((ws.rvol20-1)*100) + '%' : Math.round((ws.rvol20-1)*100) + '%'}</span>
-                </div>
-                <div class="grid grid-cols-3 gap-1 text-[10px] font-mono text-zinc-700 bg-white p-1.5 rounded-lg border border-zinc-200/50 text-center">
-                  <div><span class="text-zinc-400 block text-[9px]">當日成交量</span><b>${ws.todayVol.toLocaleString()}張</b></div>
-                  <div><span class="text-zinc-400 block text-[9px]">20日均量</span><b>${ws.ma20Vol.toLocaleString()}張</b></div>
-                  <div><span class="text-zinc-400 block text-[9px]">60日季均量</span><b>${ws.ma60Vol.toLocaleString()}張</b></div>
-                </div>
-              </div>
-
-              <!-- 2. 千張大戶與股東人數對比 -->
-              <div class="bg-zinc-50 p-2.5 rounded-xl border border-zinc-100">
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-zinc-500 font-bold text-[10px]">🏦 大戶籌碼流向 (連增 ${ws.chipsStreak} 週)</span>
-                  <span class="text-[10px] font-mono font-bold text-amber-700">淨增幅 ${ws.chipsDiff}</span>
-                </div>
-                <div class="grid grid-cols-3 gap-1 text-[10px] font-mono text-zinc-700 bg-white p-1.5 rounded-lg border border-zinc-200/50 text-center">
-                  <div><span class="text-zinc-400 block text-[9px]">本週大戶佔比</span><b>${ws.chipsCurr}</b></div>
-                  <div><span class="text-zinc-400 block text-[9px]">4週前佔比</span><b>${ws.chipsPrev}</b></div>
-                  <div><span class="text-zinc-400 block text-[9px]">總股東人數</span><b class="text-emerald-600">${ws.holdersChg}</b></div>
-                </div>
-              </div>
-
-              <!-- 3. 合約負債與技術均線位階 -->
-              <div class="grid grid-cols-2 gap-2">
-                <div class="bg-zinc-50 p-2.5 rounded-xl border border-zinc-100">
-                  <span class="text-zinc-500 font-bold text-[10px] block mb-1">📑 合約負債 (RPO)</span>
-                  <div class="font-mono text-xs font-bold text-zinc-800">${ws.contractCurr} <span class="text-[10px] text-red-600">(+${ws.contractQoQ}%)</span></div>
-                  <div class="text-[9px] text-zinc-400 font-mono mt-0.5">上季基準：${ws.contractPrev} · 年增 +${ws.contractYoY}%</div>
-                </div>
-                <div class="bg-zinc-50 p-2.5 rounded-xl border border-zinc-100">
-                  <span class="text-zinc-500 font-bold text-[10px] block mb-1">📐 技術與融資水位</span>
-                  <div class="font-mono text-xs font-bold text-zinc-800">RS強度 ${ws.rsRating} <span class="text-[10px] text-zinc-500">(VCP ${ws.vcpRange}%)</span></div>
-                  <div class="text-[9px] text-zinc-400 font-mono mt-0.5">20MA $${ws.ma20Price} · 融資20日 ${ws.marginChg20d}張</div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- 自選原地展開近月日K -->
-            <div onclick="event.stopPropagation(); toggleDrawer('watch_drawer_${stock.code}', 'watch_icon_${stock.code}', () => initKlineCrosshair('${watchChartId}', rawStocksData.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between pt-2 border-t border-zinc-100 text-[11px] text-zinc-400">
-              <span class="text-zinc-500"><i class="fa-solid fa-chart-column mr-1"></i>原地檢視近月日K線</span>
-              <span id="watch_icon_${stock.code}">展開近月日K <i class="fa-solid fa-chevron-down ml-1"></i></span>
-            </div>
-
-            <div id="watch_drawer_${stock.code}" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-700 pt-0">
-              <div class="mt-2 bg-zinc-50 rounded-xl p-3 border border-zinc-100">
+              <!-- K線圖 -->
+              <div class="mt-3 bg-zinc-50 rounded-xl p-3 border border-zinc-100">
                 ${renderInteractiveKline(watchChartId, stock.kline)}
               </div>
+
+              <!-- 1. 交易量能對比與判讀 -->
+              <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="text-zinc-900 font-bold">交易量能對比</span>
+                  <span class="font-mono font-bold text-red-600">60MA 之 ${ws.rvol60} 倍</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 text-[11px] font-mono text-zinc-700 bg-white p-2 rounded-lg border border-zinc-200/50 text-center">
+                  <div><span class="text-zinc-400 block text-[10px]">當日成交</span><b>${ws.todayVol.toLocaleString()}張</b></div>
+                  <div><span class="text-zinc-400 block text-[10px]">20日均量</span><b>${ws.ma20Vol.toLocaleString()}張</b></div>
+                  <div><span class="text-zinc-400 block text-[10px]">60日均量</span><b>${ws.ma60Vol.toLocaleString()}張</b></div>
+                </div>
+                <p class="text-[11px] text-zinc-500 leading-relaxed">
+                  判讀說明：當日量能顯著高於 20 日與 60 日均量，代表法人或主力資金主動買進推升，突破過往整理平台；若拉回時量縮，則代表籌碼安定無恐慌賣壓。
+                </p>
+              </div>
+
+              <!-- 2. 大戶籌碼流向與判讀 -->
+              <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="text-zinc-900 font-bold">大戶籌碼流向</span>
+                  <span class="font-mono font-bold text-amber-700">連增 ${ws.chipsStreak} 週 (${ws.chipsDiff})</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 text-[11px] font-mono text-zinc-700 bg-white p-2 rounded-lg border border-zinc-200/50 text-center">
+                  <div><span class="text-zinc-400 block text-[10px]">本週大戶佔比</span><b>${ws.chipsCurr}</b></div>
+                  <div><span class="text-zinc-400 block text-[10px]">4週前佔比</span><b>${ws.chipsPrev}</b></div>
+                  <div><span class="text-zinc-400 block text-[10px]">股東人數變化</span><b class="text-emerald-600">${ws.holdersChg}</b></div>
+                </div>
+                <p class="text-[11px] text-zinc-500 leading-relaxed">
+                  判讀說明：千張大戶持股比例上升且總股東人數減少，代表零散浮額正被少數主力大戶吸納鎖定，籌碼集中度提高有助於降低後續拉升時的賣壓。
+                </p>
+              </div>
+
+              <!-- 3. 合約負債與判讀 -->
+              <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="text-zinc-900 font-bold">合約負債 (在手訂單)</span>
+                  <span class="font-mono font-bold text-red-600">季增 +${ws.contractQoQ}% / 年增 +${ws.contractYoY}%</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-zinc-700 bg-white p-2 rounded-lg border border-zinc-200/50 text-center">
+                  <div><span class="text-zinc-400 block text-[10px]">本季金額</span><b>${ws.contractCurr}</b></div>
+                  <div><span class="text-zinc-400 block text-[10px]">上季基準</span><b>${ws.contractPrev}</b></div>
+                </div>
+                <p class="text-[11px] text-zinc-500 leading-relaxed">
+                  判讀說明：合約負債為客戶預付之訂金。金額大幅季增代表客戶訂單需求強勁，待後續產品完成交付認列後，將直接帶動未來一至兩季的營收與獲利成長。
+                </p>
+              </div>
+
+              <!-- 4. 技術位階與融資判讀 -->
+              <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="text-zinc-900 font-bold">技術強度與散戶融資</span>
+                  <span class="font-mono font-bold text-zinc-800">RS 強度 ${ws.rsRating} · 振幅 ${ws.vcpRange}%</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-zinc-700 bg-white p-2 rounded-lg border border-zinc-200/50 text-center">
+                  <div><span class="text-zinc-400 block text-[10px]">均線支撐 (20/60MA)</span><b>$${ws.ma20Price} / $${ws.ma60Price}</b></div>
+                  <div><span class="text-zinc-400 block text-[10px]">近20日融資增減</span><b>${ws.marginChg20d}張 (使用率${ws.marginUtil}%)</b></div>
+                </div>
+                <p class="text-[11px] text-zinc-500 leading-relaxed">
+                  判讀說明：RS 大於 75 顯示股價表現強於全市場前 25% 標的；同時融資減少與低使用率代表散戶尚未跟風追價，籌碼相對乾淨安定。
+                </p>
+              </div>
+
             </div>
 
           </div>
@@ -1004,10 +1037,10 @@
         const nav = document.getElementById('nav-' + v);
         if (v === tab) {
           el.classList.remove('hidden');
-          nav.className = 'text-amber-400 flex flex-col items-center justify-center min-w-[34px] smooth-transition';
+          nav.className = 'text-amber-400 font-bold text-xs tracking-wider smooth-transition';
         } else {
           el.classList.add('hidden');
-          nav.className = 'text-zinc-400 hover:text-white flex flex-col items-center justify-center min-w-[34px] smooth-transition';
+          nav.className = 'text-zinc-400 hover:text-white font-medium text-xs tracking-wider smooth-transition';
         }
       });
       if (tab === 'watchlist') {
@@ -1021,22 +1054,20 @@
       }
     }
 
-    // 執行華爾街多因子篩選與點擊動畫
     function executeScan() {
       const btn = document.getElementById('scan-btn');
       const text = document.getElementById('scan-text');
 
       btn.classList.add('animate-pulse', 'opacity-75', 'scale-95');
-      text.innerText = '搜尋中...';
+      text.innerText = '搜尋中';
 
       fetch('./data.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
           rawStocksData = (data.stocks || []).map(normalizeStockData);
-          document.getElementById('market-date').innerText = '最新資料: ' + (data.update_time || '--');
+          document.getElementById('market-date').innerText = data.update_time || '--';
 
           setTimeout(() => {
-            // 依據使用者在「計劃」中設定的 5 大華爾街因子進行嚴格過濾
             let filtered = rawStocksData.filter(s => {
               const ws = s.ws;
               const targetRvol = userStrategy.maDays === 60 ? ws.rvol60 : ws.rvol20;
@@ -1054,11 +1085,10 @@
 
             const summaryEl = document.getElementById('active-rule-summary');
             if (filtered.length > 0) {
-              summaryEl.innerText = `符合計劃 (${userStrategy.maDays}MA>=${userStrategy.volMultiplier}x · RS>=${userStrategy.minRsRating} · 大戶>=${userStrategy.minChipsStreak}週)`;
+              summaryEl.innerText = `符合計劃條件`;
             } else {
-              // 若設定過嚴導致 0 檔，自動依綜合機構供需分排序顯示最接近之前 3 檔，並明確提示
               filtered = [...rawStocksData].sort((a, b) => (b.fundScore || 0) - (a.fundScore || 0));
-              summaryEl.innerText = `無完全符合嚴格門檻，已依機構評分排序最接近標的`;
+              summaryEl.innerText = `無完全符合門檻，已依供需分數排序`;
             }
 
             currentList = filtered;
@@ -1070,7 +1100,7 @@
 
             btn.classList.remove('animate-pulse', 'opacity-75', 'scale-95');
             text.innerText = '篩選標的';
-          }, 450);
+          }, 400);
         })
         .catch(err => {
           console.error(err);
@@ -1079,7 +1109,6 @@
         });
     }
 
-    // 啟動載入
     loadStrategy();
     executeScan();
   </script>
