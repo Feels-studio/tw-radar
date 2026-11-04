@@ -2,8 +2,8 @@ name: Update Market Data
 
 on:
   schedule:
-    - cron: '35 7 * * 1-5'
-  workflow_dispatch:
+    - cron: '35 7 * * 1-5'  # 台灣平日 15:35 盤後自動抓真實收盤
+  workflow_dispatch:         # 支援手動隨時點擊更新
 
 jobs:
   build:
@@ -17,6 +17,11 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install yfinance requests
+
       - name: Run Fetch Script
         run: |
           python scripts/fetch_data.py
@@ -26,4 +31,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update market signals [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Fetch real market data [skip ci]" && git push)
