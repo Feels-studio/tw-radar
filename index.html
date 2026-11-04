@@ -274,13 +274,13 @@
 
   </div>
 
-  <!-- 底部純文字導航膠囊 -->
-  <div class="fixed bottom-7 left-1/2 -translate-x-1/2 z-50">
-    <div class="bg-[#1A1A1E]/95 backdrop-blur-md px-7 py-3 rounded-full border border-zinc-700/70 shadow-2xl flex items-center justify-around gap-8 text-zinc-400">
-      <button id="nav-radar" onclick="switchTab('radar')" class="text-amber-400 font-bold text-xs tracking-wider smooth-transition">標的</button>
-      <button id="nav-foreign" onclick="switchTab('foreign')" class="hover:text-white font-medium text-xs tracking-wider smooth-transition">前沿</button>
-      <button id="nav-watchlist" onclick="switchTab('watchlist')" class="hover:text-white font-medium text-xs tracking-wider smooth-transition">自選</button>
-      <button id="nav-rules" onclick="switchTab('rules')" class="hover:text-white font-medium text-xs tracking-wider smooth-transition">計劃</button>
+  <!-- 底部純文字導航膠囊（彈性均分並約束防換行） -->
+  <div class="fixed bottom-7 left-1/2 -translate-x-1/2 z-50 w-full max-w-[340px] px-4 pointer-events-none">
+    <div class="pointer-events-auto bg-[#1A1A1E]/95 backdrop-blur-md py-3 px-6 rounded-full border border-zinc-700/70 shadow-2xl flex items-center justify-between text-zinc-400">
+      <button id="nav-radar" onclick="switchTab('radar')" class="text-amber-400 font-bold text-xs tracking-wider whitespace-nowrap smooth-transition px-1">標的</button>
+      <button id="nav-foreign" onclick="switchTab('foreign')" class="hover:text-white font-medium text-xs tracking-wider whitespace-nowrap smooth-transition px-1">前沿</button>
+      <button id="nav-watchlist" onclick="switchTab('watchlist')" class="hover:text-white font-medium text-xs tracking-wider whitespace-nowrap smooth-transition px-1">自選</button>
+      <button id="nav-rules" onclick="switchTab('rules')" class="hover:text-white font-medium text-xs tracking-wider whitespace-nowrap smooth-transition px-1">計劃</button>
     </div>
   </div>
 
@@ -887,7 +887,6 @@
       });
     }
 
-    // 渲染自選清單：詳細資訊與 K 線圖一併摺疊，展開後附帶指標意義說明
     function renderWatchlist() {
       const container = document.getElementById('watchlist-container');
       const watchData = getWatchlistData();
@@ -917,7 +916,6 @@
         const card = `
           <div onclick="setFocusStock(rawStocksData.find(s=>s.code==='${stock.code}'), true)" class="bg-white rounded-2xl p-4 border ${selectedBorder} cursor-pointer smooth-transition active:scale-[0.99]">
             
-            <!-- 頭部與成本設定（預設顯示） -->
             <div class="flex justify-between items-start">
               <div>
                 <div class="flex items-center gap-2">
@@ -946,21 +944,17 @@
               </div>
             </div>
 
-            <!-- 摺疊觸發列 -->
             <div onclick="event.stopPropagation(); toggleDrawer('watch_drawer_${stock.code}', 'watch_icon_${stock.code}', '展開走勢與數據', '收起', () => initKlineCrosshair('${watchChartId}', rawStocksData.find(s=>s.code==='${stock.code}').kline))" class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-100 text-xs text-zinc-500">
               <span>近月日 K 線與深度指標判讀</span>
               <span id="watch_icon_${stock.code}" class="font-medium text-zinc-700">展開走勢與數據</span>
             </div>
 
-            <!-- 摺疊內容：K線圖 + 數據對比 + 指標正向意義說明 -->
             <div id="watch_drawer_${stock.code}" class="drawer-content max-h-0 opacity-0 overflow-hidden text-xs text-zinc-700 pt-0 space-y-3">
               
-              <!-- K線圖 -->
               <div class="mt-3 bg-zinc-50 rounded-xl p-3 border border-zinc-100">
                 ${renderInteractiveKline(watchChartId, stock.kline)}
               </div>
 
-              <!-- 1. 交易量能對比與判讀 -->
               <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
                 <div class="flex justify-between items-center">
                   <span class="text-zinc-900 font-bold">交易量能對比</span>
@@ -976,7 +970,6 @@
                 </p>
               </div>
 
-              <!-- 2. 大戶籌碼流向與判讀 -->
               <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
                 <div class="flex justify-between items-center">
                   <span class="text-zinc-900 font-bold">大戶籌碼流向</span>
@@ -992,7 +985,6 @@
                 </p>
               </div>
 
-              <!-- 3. 合約負債與判讀 -->
               <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
                 <div class="flex justify-between items-center">
                   <span class="text-zinc-900 font-bold">合約負債 (在手訂單)</span>
@@ -1007,7 +999,6 @@
                 </p>
               </div>
 
-              <!-- 4. 技術位階與融資判讀 -->
               <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
                 <div class="flex justify-between items-center">
                   <span class="text-zinc-900 font-bold">技術強度與散戶融資</span>
@@ -1037,10 +1028,10 @@
         const nav = document.getElementById('nav-' + v);
         if (v === tab) {
           el.classList.remove('hidden');
-          nav.className = 'text-amber-400 font-bold text-xs tracking-wider smooth-transition';
+          nav.className = 'text-amber-400 font-bold text-xs tracking-wider whitespace-nowrap smooth-transition px-1';
         } else {
           el.classList.add('hidden');
-          nav.className = 'text-zinc-400 hover:text-white font-medium text-xs tracking-wider smooth-transition';
+          nav.className = 'text-zinc-400 hover:text-white font-medium text-xs tracking-wider whitespace-nowrap smooth-transition px-1';
         }
       });
       if (tab === 'watchlist') {
