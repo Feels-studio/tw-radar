@@ -56,7 +56,7 @@
       <p id="focus-desc" class="text-xs text-zinc-400 mt-1 line-clamp-1">--</p>
     </div>
 
-    <!-- 雙軌真實客觀數據卡（無自創假分數） -->
+    <!-- 雙軌真實客觀數據卡 -->
     <div class="grid grid-cols-2 gap-3 mt-5">
       <div onclick="toggleTopScoreDetail('left')" class="bg-zinc-800/70 active:bg-zinc-700/80 rounded-2xl p-3.5 border border-zinc-700/50 cursor-pointer smooth-transition">
         <div class="flex justify-between items-center mb-1">
@@ -103,7 +103,7 @@
       <div id="cards-container" class="space-y-3.5"></div>
     </div>
 
-    <!-- 視圖 2: 前沿（新聞檢索索引） -->
+    <!-- 視圖 2: 前沿 -->
     <div id="view-foreign" class="hidden space-y-3">
       <div class="text-xs font-bold text-zinc-500 px-1 mb-2">個股即時新聞檢索索引</div>
       <div id="foreign-container" class="space-y-3"></div>
@@ -118,15 +118,15 @@
       <div id="watchlist-container" class="space-y-3.5"></div>
     </div>
 
-    <!-- 視圖 4: 計劃（僅保留 100% 真實歷史可計算之篩選條件） -->
+    <!-- 視圖 4: 計劃 -->
     <div id="view-rules" class="hidden space-y-4">
       <div class="bg-white rounded-2xl p-5 shadow-sm border border-zinc-200/60 space-y-4">
         <div class="flex justify-between items-start border-b border-zinc-100 pb-3">
           <div>
             <h3 class="font-bold text-base text-zinc-900">真實歷史量化篩選設定</h3>
-            <p class="text-xs text-zinc-400 mt-0.5">所有條件均直接比對過去 60 日真實日 K 線與官方融資資料</p>
+            <p class="text-xs text-zinc-400 mt-0.5">直接比對過去 60 日真實日 K 線計算之均價與均量</p>
           </div>
-          <button onclick="resetDefaultStrategy()" class="text-xs text-zinc-500 bg-zinc-100 px-3 py-1 rounded-lg font-medium">重置</button>
+          <button onclick="resetDefaultStrategy()" class="text-xs text-zinc-500 bg-zinc-100 px-3 py-1 rounded-lg font-medium">重置預設</button>
         </div>
 
         <!-- 條件 1：相對成交量 (RVOL) -->
@@ -134,7 +134,7 @@
           <div class="flex justify-between items-start">
             <div>
               <div class="text-sm font-bold text-zinc-900">相對成交量 (RVOL)</div>
-              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-rvol">60日均量 1.5 倍以上</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-rvol">60日均量 · 不限倍數</div>
             </div>
             <button onclick="toggleRuleExplain('exp-rvol')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
           </div>
@@ -152,9 +152,10 @@
             <div>
               <label class="text-[11px] text-zinc-500">最低放量倍數</label>
               <select id="rule-vol-mult" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="0.0">不限倍數</option>
+                <option value="0.0" selected>不限倍數 (全部顯示)</option>
+                <option value="1.0">1.0 倍以上</option>
                 <option value="1.2">1.2 倍以上</option>
-                <option value="1.5" selected>1.5 倍以上</option>
+                <option value="1.5">1.5 倍以上</option>
                 <option value="2.0">2.0 倍以上</option>
               </select>
             </div>
@@ -166,7 +167,7 @@
           <div class="flex justify-between items-start">
             <div>
               <div class="text-sm font-bold text-zinc-900">相對強度排名 (RS) 與均線位階</div>
-              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-rs">RS 70 以上 · 站上60MA季線</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-rs">不限排名 · 不限均線</div>
             </div>
             <button onclick="toggleRuleExplain('exp-rs')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
           </div>
@@ -177,17 +178,17 @@
             <div>
               <label class="text-[11px] text-zinc-500">最低 RS 排名</label>
               <select id="rule-rs" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="1">不限排名</option>
+                <option value="0" selected>不限排名 (全部顯示)</option>
                 <option value="50">50 以上</option>
-                <option value="70" selected>70 以上 (前30%強勢)</option>
+                <option value="70">70 以上 (前30%強勢)</option>
                 <option value="85">85 以上 (前15%強勢)</option>
               </select>
             </div>
             <div>
               <label class="text-[11px] text-zinc-500">真實均線結構</label>
               <select id="rule-trend" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="any">不限均線位置</option>
-                <option value="ma60" selected>收盤價 >= 真實 60MA</option>
+                <option value="any" selected>不限均線位置</option>
+                <option value="ma60">收盤價 >= 真實 60MA</option>
                 <option value="ma20_60">收盤價 >= 20MA 且 >= 60MA</option>
               </select>
             </div>
@@ -199,7 +200,7 @@
           <div class="flex justify-between items-start">
             <div>
               <div class="text-sm font-bold text-zinc-900">近 10 日真實振幅與當日收盤方向</div>
-              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-vcp">振幅 30% 內 · 限當日上漲</div>
+              <div class="text-xs font-bold text-red-600 font-mono mt-0.5" id="lbl-vcp">不限振幅 · 不限漲跌</div>
             </div>
             <button onclick="toggleRuleExplain('exp-vcp')" class="text-xs text-zinc-400 hover:text-zinc-700 px-2 py-0.5 bg-white rounded border border-zinc-200">說明</button>
           </div>
@@ -210,16 +211,16 @@
             <div>
               <label class="text-[11px] text-zinc-500">近 10 日高低振幅上限</label>
               <select id="rule-vcp" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="999">不限振幅</option>
-                <option value="30" selected>30% 以內</option>
+                <option value="999" selected>不限振幅 (全部顯示)</option>
+                <option value="30">30% 以內</option>
                 <option value="15">15% 以內 (緊密收斂)</option>
               </select>
             </div>
             <div>
               <label class="text-[11px] text-zinc-500">當日漲跌限制</label>
               <select id="rule-up" class="w-full mt-1 p-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium" onchange="updateRulePreview()">
-                <option value="any">不限漲跌</option>
-                <option value="up" selected>限當日收紅盤 (漲幅 >= 0%)</option>
+                <option value="any" selected>不限漲跌 (全部顯示)</option>
+                <option value="up">限當日收紅盤 (漲幅 >= 0%)</option>
               </select>
             </div>
           </div>
@@ -250,16 +251,47 @@
     let isViewingWatchlist = false;
     let currentOpenScoreSide = null;
 
+    // 預設採用完全展開，讓操作者一進來先看到完整母體，再自行收緊條件
     const DEFAULT_STRATEGY = {
       maDays: 60,
-      volMultiplier: 1.5,
-      minRsRating: 70,
-      trendStage: 'ma60',
-      maxVcpRange: 30,
-      upOnly: 'up'
+      volMultiplier: 0.0,
+      minRsRating: 0,
+      trendStage: 'any',
+      maxVcpRange: 999,
+      upOnly: 'any'
     };
 
     let userStrategy = { ...DEFAULT_STRATEGY };
+
+    // 自動相容提取指標（無論 data.json 是新結構 metrics 還是舊結構 wallStreet 都不會變 0 檔）
+    function getMetrics(s) {
+      const m = s.metrics || s.wallStreet || {};
+      const k = s.kline || [];
+      const latestVol = m.todayVol || (k.length > 0 ? k[k.length - 1].vol : 0);
+      const ma20Vol = m.ma20Vol || latestVol || 1;
+      const ma60Vol = m.ma60Vol || latestVol || 1;
+      const ma20Price = m.ma20Price || s.price || 0;
+      const ma60Price = m.ma60Price || s.price || 0;
+      const ret3mRaw = m.ret3mPct !== undefined ? parseFloat(String(m.ret3mPct).replace('%', '').replace('+', '')) : 0;
+      const ret20dRaw = m.ret20dPct !== undefined ? parseFloat(String(m.ret20dPct).replace('%', '').replace('+', '')) : 0;
+
+      return {
+        todayVol: latestVol,
+        ma20Vol: ma20Vol,
+        ma60Vol: ma60Vol,
+        rvol20: m.rvol20 !== undefined ? Number(m.rvol20) : 1.0,
+        rvol60: m.rvol60 !== undefined ? Number(m.rvol60) : 1.0,
+        ma20Price: ma20Price,
+        ma60Price: ma60Price,
+        aboveMa20: m.aboveMa20 !== undefined ? m.aboveMa20 : (s.price >= ma20Price),
+        aboveMa60: m.aboveMa60 !== undefined ? m.aboveMa60 : (m.stagePass !== undefined ? m.stagePass : (s.price >= ma60Price)),
+        maTrend: m.maTrend || (s.price >= ma60Price ? '站上60MA季線' : '季線之下'),
+        rsRating: m.rsRating !== undefined ? Number(m.rsRating) : 50,
+        ret20dPct: isNaN(ret20dRaw) ? 0 : ret20dRaw,
+        ret3mPct: isNaN(ret3mRaw) ? 0 : ret3mRaw,
+        vcpRange: m.vcpRange !== undefined ? Number(m.vcpRange) : 10.0
+      };
+    }
 
     function toggleRuleExplain(id) {
       const el = document.getElementById(id);
@@ -268,7 +300,7 @@
 
     function loadStrategy() {
       try {
-        const saved = JSON.parse(localStorage.getItem('tw_radar_pure_strategy_v1'));
+        const saved = JSON.parse(localStorage.getItem('tw_radar_pure_strategy_v2'));
         if (saved) userStrategy = { ...DEFAULT_STRATEGY, ...saved };
       } catch (e) {}
       syncStrategyUI();
@@ -286,7 +318,7 @@
 
     function resetDefaultStrategy() {
       userStrategy = { ...DEFAULT_STRATEGY };
-      localStorage.setItem('tw_radar_pure_strategy_v1', JSON.stringify(userStrategy));
+      localStorage.setItem('tw_radar_pure_strategy_v2', JSON.stringify(userStrategy));
       syncStrategyUI();
     }
 
@@ -302,8 +334,9 @@
         ? `${userStrategy.maDays}日均量 · 不限倍數` 
         : `${userStrategy.maDays}日均量 ${userStrategy.volMultiplier.toFixed(1)} 倍以上`;
 
+      const rsText = userStrategy.minRsRating === 0 ? '不限排名' : `RS ${userStrategy.minRsRating} 以上`;
       const trendText = userStrategy.trendStage === 'ma20_60' ? '站上20/60MA' : (userStrategy.trendStage === 'ma60' ? '站上60MA季線' : '不限均線');
-      document.getElementById('lbl-rs').innerText = `RS ${userStrategy.minRsRating} 以上 · ${trendText}`;
+      document.getElementById('lbl-rs').innerText = `${rsText} · ${trendText}`;
 
       const vcpText = userStrategy.maxVcpRange >= 999 ? '不限振幅' : `振幅 ${userStrategy.maxVcpRange}% 內`;
       const upText = userStrategy.upOnly === 'up' ? '限當日上漲' : '不限漲跌';
@@ -312,7 +345,7 @@
 
     function applyRulesAndScan() {
       updateRulePreview();
-      localStorage.setItem('tw_radar_pure_strategy_v1', JSON.stringify(userStrategy));
+      localStorage.setItem('tw_radar_pure_strategy_v2', JSON.stringify(userStrategy));
       switchTab('radar');
       executeScan();
     }
@@ -337,7 +370,7 @@
       if (!focusedStock || !currentOpenScoreSide) return;
       const titleEl = document.getElementById('drawer-title');
       const bodyEl = document.getElementById('drawer-body');
-      const m = focusedStock.metrics || {};
+      const m = getMetrics(focusedStock);
       const watchData = getWatchlistData();
       const watchInfo = watchData[focusedStock.code];
 
@@ -370,10 +403,9 @@
       if (currentOpenScoreSide === 'left') {
         titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 真實成交量能明細`;
         bodyEl.innerHTML = `
-          <div class="flex justify-between"><span>當日真實成交量：</span><b class="text-white">${(m.todayVol || 0).toLocaleString()} 張</b></div>
-          <div class="flex justify-between"><span>過去 20 日真實均量：</span><b class="text-amber-300">${(m.ma20Vol || 0).toLocaleString()} 張 (RVOL ${m.rvol20}倍)</b></div>
-          <div class="flex justify-between"><span>過去 60 日真實均量：</span><b class="text-amber-300">${(m.ma60Vol || 0).toLocaleString()} 張 (RVOL ${m.rvol60}倍)</b></div>
-          <div class="flex justify-between"><span>官方今日融資餘額：</span><b class="text-white">${m.marginLots !== null && m.marginLots !== undefined ? m.marginLots.toLocaleString() + ' 張 (增減 ' + (m.marginChg >= 0 ? '+' + m.marginChg : m.marginChg) + ' 張)' : '無融資資料'}</b></div>
+          <div class="flex justify-between"><span>當日真實成交量：</span><b class="text-white">${m.todayVol.toLocaleString()} 張</b></div>
+          <div class="flex justify-between"><span>過去 20 日真實均量：</span><b class="text-amber-300">${m.ma20Vol.toLocaleString()} 張 (RVOL ${m.rvol20}倍)</b></div>
+          <div class="flex justify-between"><span>過去 60 日真實均量：</span><b class="text-amber-300">${m.ma60Vol.toLocaleString()} 張 (RVOL ${m.rvol60}倍)</b></div>
         `;
       } else {
         titleEl.innerText = `${focusedStock.name} (${focusedStock.code}) 真實價格位階明細`;
@@ -443,7 +475,7 @@
       if (!stock) return;
       focusedStock = stock;
       isViewingWatchlist = fromWatchlist;
-      const m = stock.metrics || {};
+      const m = getMetrics(stock);
 
       document.getElementById('focus-name').innerText = stock.name;
       document.getElementById('focus-code').innerText = stock.code;
@@ -636,15 +668,15 @@
       if (stocks.length === 0) {
         container.innerHTML = `
           <div class="text-center py-20 text-zinc-400 text-xs">
-            <p>目前條件未篩選出標的</p>
-            <p class="text-[11px] text-zinc-400 mt-1">請至「計劃」分頁調整篩選門檻</p>
+            <p>目前篩選條件下無符合標的（母體資料庫共 ${rawStocksData.length} 檔）</p>
+            <p class="text-[11px] text-zinc-400 mt-1">請至「計劃」分頁點擊右上角「重置預設」即可顯示全部母體</p>
           </div>
         `;
         return;
       }
 
       stocks.forEach(stock => {
-        const m = stock.metrics;
+        const m = getMetrics(stock);
         const isWatched = !!watchData[stock.code];
         const isSelected = focusedStock && focusedStock.code === stock.code && !isViewingWatchlist;
         const watchBtnStyle = isWatched 
@@ -664,9 +696,6 @@
         ];
         const tagsHtml = dynamicTags.map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-zinc-100 text-zinc-700 font-mono font-medium">${t}</span>`).join('');
         const chartContainerId = `kline_${stock.code}`;
-        const mrgText = m.marginLots !== null && m.marginLots !== undefined
-          ? `今日融資餘額 ${m.marginLots.toLocaleString()} 張（增減 ${m.marginChg >= 0 ? '+' + m.marginChg : m.marginChg} 張，使用率 ${m.marginUtil}%）`
-          : '無融資融券資料';
 
         const card = `
           <div onclick="setFocusStock(rawStocksData.find(s=>s.code==='${stock.code}'), false)" class="bg-white rounded-2xl p-4 border ${selectedBorder} smooth-transition active:scale-[0.99] cursor-pointer">
@@ -704,7 +733,6 @@
               <div class="bg-zinc-50 rounded-xl p-3.5 border border-zinc-100 space-y-2 text-[11px] leading-relaxed">
                 <div><b class="text-zinc-900">真實成交量比：</b>當日成交 ${m.todayVol.toLocaleString()} 張，過去 20 日均量 ${m.ma20Vol.toLocaleString()} 張（${m.rvol20}倍），過去 60 日均量 ${m.ma60Vol.toLocaleString()} 張（${m.rvol60}倍）。</div>
                 <div><b class="text-zinc-900">真實均線與波段漲跌：</b>20MA $${m.ma20Price} / 60MA $${m.ma60Price}；近 20 日漲跌 ${m.ret20dPct >= 0 ? '+' : ''}${m.ret20dPct}%，近 60 日漲跌 ${m.ret3mPct >= 0 ? '+' : ''}${m.ret3mPct}%。</div>
-                <div><b class="text-zinc-900">官方融資餘額：</b>${mrgText}。</div>
               </div>
             </div>
           </div>
@@ -717,18 +745,19 @@
       const container = document.getElementById('foreign-container');
       container.innerHTML = '';
       stocks.slice(0, 50).forEach(s => {
-        const m = s.metrics;
+        const m = getMetrics(s);
+        const url = s.newsUrl || (s.foreignIntel && s.foreignIntel.url) || `https://www.google.com/search?q=${encodeURIComponent(s.name + ' ' + s.code + ' 股票 新聞')}&tbm=nws`;
         container.insertAdjacentHTML('beforeend', `
           <div class="bg-white rounded-2xl p-4 border border-zinc-200/60 space-y-2">
             <div class="flex justify-between items-center text-[10px] text-zinc-400">
-              <span class="font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-2.5 py-0.5 rounded-full font-mono">${s.market} (${s.code})</span>
+              <span class="font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-2.5 py-0.5 rounded-full font-mono">${s.market || '台股'} (${s.code})</span>
               <span class="font-mono">收盤 $${s.price} (${s.change})</span>
             </div>
             <div class="text-xs font-bold text-zinc-900 leading-snug">${s.name} (${s.code}) 即時財經新聞檢索</div>
             <p class="text-xs text-zinc-600 leading-relaxed">當日成交 ${m.todayVol.toLocaleString()} 張（60日均量 ${m.ma60Vol.toLocaleString()} 張），近一季真實累積漲跌幅 ${m.ret3mPct >= 0 ? '+' : ''}${m.ret3mPct}%。</p>
             <div class="pt-2.5 border-t border-zinc-100 flex justify-between items-center text-xs">
               <span class="text-zinc-500">Google 新聞搜尋直達</span>
-              <a href="${s.newsUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-zinc-900 text-amber-400 rounded-lg font-medium hover:bg-zinc-800 text-[11px]">
+              <a href="${url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-zinc-900 text-amber-400 rounded-lg font-medium hover:bg-zinc-800 text-[11px]">
                 搜尋相關新聞
               </a>
             </div>
@@ -757,7 +786,7 @@
         const stock = rawStocksData.find(s => s.code === code);
         if (!stock) return;
         const info = watchData[code];
-        const m = stock.metrics;
+        const m = getMetrics(stock);
 
         const isSelected = focusedStock && focusedStock.code === stock.code && isViewingWatchlist;
         const selectedBorder = isSelected ? 'border-amber-500 shadow-md ring-1 ring-amber-500/30' : 'border-zinc-200/70';
@@ -815,9 +844,6 @@
                   <div><span class="text-zinc-400 block text-[10px]">20日真實均量</span><b>${m.ma20Vol.toLocaleString()}張</b></div>
                   <div><span class="text-zinc-400 block text-[10px]">60日真實均量</span><b>${m.ma60Vol.toLocaleString()}張</b></div>
                 </div>
-                <p class="text-[11px] text-zinc-500 leading-relaxed">
-                  判讀說明：由過去 20 日與 60 日真實日 K 線成交量計算之平均值，用以比對當日量能是否顯著放大。
-                </p>
               </div>
 
               <div class="bg-zinc-50 p-3 rounded-xl border border-zinc-100 space-y-2">
@@ -830,9 +856,6 @@
                   <div><span class="text-zinc-400 block text-[10px]">60MA 季線</span><b>$${m.ma60Price}</b></div>
                   <div><span class="text-zinc-400 block text-[10px]">近10日振幅</span><b>${m.vcpRange}%</b></div>
                 </div>
-                <p class="text-[11px] text-zinc-500 leading-relaxed">
-                  判讀說明：直接由過去 20 日與 60 日真實收盤價平均算出之均線支撐，以及過去 10 個交易日高低點之真實箱體振幅。
-                </p>
               </div>
 
             </div>
@@ -882,23 +905,22 @@
 
           setTimeout(() => {
             let filtered = rawStocksData.filter(s => {
-              const m = s.metrics;
-              if (!m) return false;
+              const m = getMetrics(s);
               const targetRvol = userStrategy.maDays === 60 ? m.rvol60 : m.rvol20;
               
-              const passVol = userStrategy.volMultiplier === 0 ? true : (targetRvol >= userStrategy.volMultiplier);
-              const passRs = m.rsRating >= userStrategy.minRsRating;
+              const passVol = userStrategy.volMultiplier <= 0 ? true : (targetRvol >= userStrategy.volMultiplier);
+              const passRs = userStrategy.minRsRating <= 0 ? true : (m.rsRating >= userStrategy.minRsRating);
               const passTrend = userStrategy.trendStage === 'any' 
                 ? true 
                 : (userStrategy.trendStage === 'ma20_60' ? (m.aboveMa20 && m.aboveMa60) : m.aboveMa60);
-              const passVcp = m.vcpRange <= userStrategy.maxVcpRange;
+              const passVcp = userStrategy.maxVcpRange >= 999 ? true : (m.vcpRange <= userStrategy.maxVcpRange);
               const passUp = userStrategy.upOnly === 'any' ? true : s.isUp;
 
               return passVol && passRs && passTrend && passVcp && passUp;
             });
 
             const summaryEl = document.getElementById('active-rule-summary');
-            summaryEl.innerText = `符合真實篩選條件 (共 ${filtered.length} 檔)`;
+            summaryEl.innerText = `資料庫母體 ${rawStocksData.length} 檔 · 符合篩選 ${filtered.length} 檔`;
 
             currentList = filtered;
             if (currentList.length > 0) {
@@ -913,6 +935,7 @@
         })
         .catch(err => {
           console.error(err);
+          document.getElementById('active-rule-summary').innerText = '讀取 data.json 失敗，請確認 Actions 已執行';
           btn.classList.remove('animate-pulse', 'opacity-75', 'scale-95');
           text.innerText = '篩選標的';
         });
